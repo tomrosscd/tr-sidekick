@@ -1,5 +1,4 @@
 {
-  "/api/events/route": "app/api/events/route.js",
   "/page": "app/page.js",
   "/prompts/[slug]/page": "app/prompts/[slug]/page.js",
   "/admin/page": "app/admin/page.js",

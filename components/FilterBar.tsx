@@ -20,7 +20,6 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
 
   // Read state from URL
   const category = searchParams.get('cat') ?? 'All'
-  const source = searchParams.get('src') ?? 'all'
   const search = searchParams.get('q') ?? ''
   const level = searchParams.get('level') ?? ''
   const useCases = searchParams.get('useCases')?.split(',').filter(Boolean) ?? []
@@ -66,7 +65,6 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
 
   const hasActiveFilters =
     category !== 'All' ||
-    source !== 'all' ||
     search !== '' ||
     level !== '' ||
     useCases.length > 0 ||
@@ -76,7 +74,7 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
   return (
     <div
       id="fbar"
-      className="bg-white border-b border-brand-border sticky z-[200]"
+      className="bg-white border-b border-brand-border sticky z-[200] shadow-[0_1px_0_rgba(23,23,23,0.02)]"
       style={{ top: 'var(--hdr-h, 0px)' }}
     >
       {/* Category tabs */}
@@ -89,7 +87,7 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
               trackEvent('filter_used', { filterState: { category: cat.value } })
             }}
             className={cn(
-              'px-[13px] py-3 text-[13px] font-[700] text-brand-gray whitespace-nowrap',
+              'px-4 py-3.5 text-body-sm font-[700] text-brand-gray whitespace-nowrap',
               'border-b-2 border-transparent transition-all flex-shrink-0 flex items-center gap-[5px]',
               'hover:text-dg',
               category === cat.value && 'text-dg border-b-fg'
@@ -97,12 +95,12 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
           >
             {cat.label}
             {cat.value !== 'All' && totalCounts[cat.value] !== undefined && (
-              <span className="bg-lg text-dg text-[9px] font-[900] px-[6px] py-[1px] rounded-[10px] min-w-[18px] text-center">
+              <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-lg px-[7px] text-label leading-none align-middle font-[900] text-dg">
                 {totalCounts[cat.value] ?? 0}
               </span>
             )}
             {cat.value === 'All' && (
-              <span className="bg-lg text-dg text-[9px] font-[900] px-[6px] py-[1px] rounded-[10px] min-w-[18px] text-center">
+              <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-lg px-[7px] text-label leading-none align-middle font-[900] text-dg">
                 {Object.values(totalCounts).reduce((a, b) => a + b, 0)}
               </span>
             )}
@@ -111,56 +109,35 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
       </div>
 
       {/* Search row */}
-      <div className="flex items-center gap-2.5 px-5 py-2 flex-wrap">
+      <div className="flex items-center gap-3 px-5 py-3 flex-wrap">
         {/* Search input */}
         <div className="relative flex-1 min-w-40">
-          <Search
-            size={14}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-gray pointer-events-none"
-          />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-gray pointer-events-none" />
           <input
             type="search"
             placeholder="Search prompts…"
             value={localSearch}
             onChange={e => setLocalSearch(e.target.value)}
             className={cn(
-              'w-full pl-[30px] pr-8 py-[7px] border border-brand-border rounded-[7px] text-[13px] text-brand-black bg-cream',
-              'placeholder:text-brand-gray focus:outline-none focus:border-fg transition-colors'
+              'w-full h-10 pl-10 pr-8 border border-brand-border rounded-lg text-body-sm font-[700] text-brand-black bg-white',
+              'placeholder:text-brand-gray focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20 transition-all'
             )}
           />
           {localSearch && (
             <button
               onClick={() => setLocalSearch('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-brand-gray hover:text-brand-black"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-gray hover:text-brand-black"
             >
               <X size={13} />
             </button>
           )}
         </div>
 
-        {/* Source toggle */}
-        <div className="flex border border-brand-border rounded-[7px] p-[3px] flex-shrink-0">
-          {(['all', 'convert', 'shopify'] as const).map(src => (
-            <button
-              key={src}
-              onClick={() => updateParam('src', src === 'all' ? null : src)}
-              className={cn(
-                'px-3 py-[5px] rounded-[5px] text-[12px] font-[800] tracking-[0.04em] transition-all whitespace-nowrap',
-                source === src
-                  ? 'bg-dg text-white'
-                  : 'text-brand-gray hover:bg-lg hover:text-dg'
-              )}
-            >
-              {src === 'all' ? 'All' : src.charAt(0).toUpperCase() + src.slice(1)}
-            </button>
-          ))}
-        </div>
-
         {/* More filters toggle */}
         <button
           onClick={() => setShowFilters(v => !v)}
           className={cn(
-            'flex items-center gap-1.5 px-3 py-[7px] rounded-[7px] text-[12px] font-[700] transition-colors border',
+            'flex h-10 items-center gap-1.5 px-3.5 rounded-lg text-caption font-[700] transition-colors border',
             showFilters
               ? 'bg-dg text-white border-dg'
               : 'border-brand-border text-brand-gray hover:border-fg hover:text-dg'
@@ -169,7 +146,7 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
           <SlidersHorizontal size={13} />
           Filters
           {(level || useCases.length > 0 || featured || recommended) && (
-            <span className="bg-fg text-white text-[9px] font-[900] w-4 h-4 rounded-full flex items-center justify-center">
+            <span className="bg-fg text-white text-label font-[900] w-5 h-5 rounded-full flex items-center justify-center">
               {(level ? 1 : 0) + useCases.length + (featured ? 1 : 0) + (recommended ? 1 : 0)}
             </span>
           )}
@@ -179,7 +156,7 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
         {hasActiveFilters && (
           <button
             onClick={clearAll}
-            className="text-[12px] font-[700] text-brand-gray hover:text-dg transition-colors flex items-center gap-1"
+            className="text-caption font-[700] text-brand-gray hover:text-dg transition-colors flex items-center gap-1"
           >
             <X size={12} />
             Clear all
@@ -189,19 +166,19 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
 
       {/* Extended filters panel */}
       {showFilters && (
-        <div className="px-5 py-3 border-t border-brand-border flex flex-wrap gap-x-6 gap-y-3 bg-cream/50">
+        <div className="px-5 py-4 border-t border-brand-border flex flex-wrap gap-x-8 gap-y-4 bg-cream/55">
           {/* Level */}
           <div className="flex flex-col gap-1.5">
-            <span className="text-[9px] font-[800] uppercase tracking-[0.14em] text-brand-gray">
+            <span className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray">
               Level
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex gap-2">
               {(['', 'beginner', 'intermediate', 'advanced'] as const).map(lvl => (
                 <button
                   key={lvl}
                   onClick={() => updateParam('level', lvl || null)}
                   className={cn(
-                    'px-2.5 py-1 rounded-[5px] text-[11.5px] font-[700] transition-colors border',
+                    'h-8 px-3 rounded-md text-caption font-[700] transition-colors border',
                     level === lvl
                       ? 'bg-dg text-white border-dg'
                       : 'bg-white border-brand-border text-brand-gray hover:border-fg hover:text-dg'
@@ -215,10 +192,10 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
 
           {/* Use cases */}
           <div className="flex flex-col gap-1.5">
-            <span className="text-[9px] font-[800] uppercase tracking-[0.14em] text-brand-gray">
+            <span className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray">
               Use case
             </span>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {USE_CASE_OPTIONS.map(uc => {
                 const active = useCases.includes(uc)
                 return (
@@ -231,7 +208,7 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
                       updateParam('useCases', next.join(',') || null)
                     }}
                     className={cn(
-                      'flex items-center gap-1 px-2.5 py-1 rounded-[5px] text-[11.5px] font-[700] transition-colors border',
+                      'flex h-8 items-center gap-1 px-3 rounded-md text-caption font-[700] transition-colors border',
                       active
                         ? 'bg-dg text-white border-dg'
                         : 'bg-white border-brand-border text-brand-gray hover:border-fg hover:text-dg'
@@ -247,14 +224,14 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
 
           {/* Featured / Recommended */}
           <div className="flex flex-col gap-1.5">
-            <span className="text-[9px] font-[800] uppercase tracking-[0.14em] text-brand-gray">
+            <span className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray">
               Curated
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex gap-2">
               <button
                 onClick={() => updateParam('featured', featured ? null : '1')}
                 className={cn(
-                  'px-2.5 py-1 rounded-[5px] text-[11.5px] font-[700] transition-colors border',
+                  'h-8 px-3 rounded-md text-caption font-[700] transition-colors border',
                   featured
                     ? 'bg-dg text-white border-dg'
                     : 'bg-white border-brand-border text-brand-gray hover:border-fg hover:text-dg'
@@ -265,7 +242,7 @@ export function FilterBar({ totalCounts, isAdmin = false }: FilterBarProps) {
               <button
                 onClick={() => updateParam('recommended', recommended ? null : '1')}
                 className={cn(
-                  'px-2.5 py-1 rounded-[5px] text-[11.5px] font-[700] transition-colors border',
+                  'h-8 px-3 rounded-md text-caption font-[700] transition-colors border',
                   recommended
                     ? 'bg-dg text-white border-dg'
                     : 'bg-white border-brand-border text-brand-gray hover:border-fg hover:text-dg'

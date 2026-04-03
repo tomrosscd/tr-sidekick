@@ -67,8 +67,8 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-serif text-[26px] text-brand-black">Prompts</h1>
-        <div className="text-[12px] text-brand-gray font-[600]">
+        <h1 className="font-serif text-h2 text-brand-black">Prompts</h1>
+        <div className="text-caption text-brand-gray font-[700]">
           {filtered.length} of {prompts.length}
         </div>
       </div>
@@ -80,7 +80,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
           placeholder="Search prompts…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 border border-brand-border rounded-lg px-3 py-2 text-[13px] bg-white focus:outline-none focus:border-fg"
+          className="flex-1 h-10 border border-brand-border rounded-lg px-3.5 text-body-sm font-[600] bg-white focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20"
         />
         <div className="w-40">
           <Select value={catFilter} onValueChange={setCatFilter}>
@@ -100,24 +100,24 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
 
       {/* Table */}
       <div className="bg-white border border-brand-border rounded-xl overflow-hidden">
-        <table className="w-full text-[12.5px]">
+        <table className="w-full text-body-sm">
           <thead>
             <tr className="border-b border-brand-border bg-cream/50">
-              <th className="text-left px-4 py-3 font-[800] text-[10px] uppercase tracking-[0.1em] text-brand-gray">Title</th>
-              <th className="text-left px-4 py-3 font-[800] text-[10px] uppercase tracking-[0.1em] text-brand-gray hidden sm:table-cell">Cat</th>
-              <th className="text-left px-4 py-3 font-[800] text-[10px] uppercase tracking-[0.1em] text-brand-gray">Visibility</th>
-              <th className="text-left px-4 py-3 font-[800] text-[10px] uppercase tracking-[0.1em] text-brand-gray">Status</th>
-              <th className="text-left px-4 py-3 font-[800] text-[10px] uppercase tracking-[0.1em] text-brand-gray">Featured</th>
-              <th className="text-left px-4 py-3 font-[800] text-[10px] uppercase tracking-[0.1em] text-brand-gray">Actions</th>
+              <th className="text-left px-4 py-3.5 text-label uppercase tracking-[0.08em] text-brand-gray">Title</th>
+              <th className="text-left px-4 py-3.5 text-label uppercase tracking-[0.08em] text-brand-gray hidden sm:table-cell">Cat</th>
+              <th className="text-left px-4 py-3.5 text-label uppercase tracking-[0.08em] text-brand-gray">Visibility</th>
+              <th className="text-left px-4 py-3.5 text-label uppercase tracking-[0.08em] text-brand-gray">Status</th>
+              <th className="text-left px-4 py-3.5 text-label uppercase tracking-[0.08em] text-brand-gray">Featured</th>
+              <th className="text-left px-4 py-3.5 text-label uppercase tracking-[0.08em] text-brand-gray">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-border">
             {filtered.map(p => (
               <tr key={p.id} className="hover:bg-cream/30 transition-colors">
                 <td className="px-4 py-3">
-                  <div className="font-[700] text-brand-black">{p.title}</div>
+                  <div className="font-[700] text-brand-black text-body-sm">{p.title}</div>
                   {p.source_label && (
-                    <div className="text-[10px] text-brand-gray mt-0.5">{p.source_label}</div>
+                    <div className="text-label text-brand-gray mt-0.5">{p.source_label}</div>
                   )}
                 </td>
                 <td className="px-4 py-3 hidden sm:table-cell text-brand-gray">{p.category}</td>
@@ -127,7 +127,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
                   <select
                     value={p.visibility}
                     onChange={e => update(p.id, { visibility: e.target.value as Visibility })}
-                    className="text-[11.5px] font-[700] bg-transparent border border-brand-border rounded-md px-2 py-1 focus:outline-none focus:border-fg"
+                    className="h-8 text-caption font-[700] bg-white border border-brand-border rounded-md px-2.5 focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20"
                   >
                     <option value="public">Public</option>
                     <option value="internal">Internal</option>
@@ -140,7 +140,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
                   <select
                     value={p.status}
                     onChange={e => update(p.id, { status: e.target.value as PromptStatus })}
-                    className="text-[11.5px] font-[700] bg-transparent border border-brand-border rounded-md px-2 py-1 focus:outline-none focus:border-fg"
+                    className="h-8 text-caption font-[700] bg-white border border-brand-border rounded-md px-2.5 focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20"
                   >
                     <option value="published">Published</option>
                     <option value="draft">Draft</option>
@@ -164,7 +164,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
                     <button
                       onClick={() => update(p.id, { is_recommended: !p.is_recommended })}
                       className={cn(
-                        'p-1.5 rounded-md transition-colors text-[9px] font-[700] border',
+                        'p-1.5 rounded-md transition-colors text-label font-[700] border',
                         p.is_recommended
                           ? 'bg-lg/30 text-dg border-lg'
                           : 'border-brand-border text-brand-gray hover:border-fg'
@@ -181,7 +181,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
                   <Link
                     href={`/prompts/${p.slug}`}
                     target="_blank"
-                    className="text-fg hover:underline flex items-center gap-1"
+                    className="text-fg hover:underline flex items-center gap-1 text-caption font-[700]"
                   >
                     <ExternalLink size={11} />
                     View
@@ -193,7 +193,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
         </table>
 
         {filtered.length === 0 && (
-          <div className="py-10 text-center text-[13px] text-brand-gray">
+          <div className="py-10 text-center text-body-sm text-brand-gray font-[600]">
             No prompts match your filters.
           </div>
         )}

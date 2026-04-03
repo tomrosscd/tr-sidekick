@@ -46,12 +46,12 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-5 py-6 pb-16">
+    <main className="max-w-4xl mx-auto px-5 py-8 pb-20">
       {/* Back nav */}
-      <div className="mb-6">
+      <div className="mb-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-[700] text-brand-gray hover:text-dg transition-colors"
+          className="inline-flex items-center gap-1.5 text-body-sm font-[700] text-brand-gray hover:text-dg transition-colors"
         >
           <ArrowLeft size={13} />
           Back to library
@@ -59,11 +59,11 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       </div>
 
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2 mb-3 flex-wrap">
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           {catConfig && catConfig.value !== 'All' && (
             <span className={cn(
-              'text-[9.5px] font-[800] tracking-[0.08em] uppercase px-2 py-[3px] rounded-full',
+              'text-label font-[800] tracking-[0.08em] uppercase px-2.5 py-1 rounded-full',
               catConfig.pillClass
             )}>
               {prompt.category}
@@ -74,24 +74,24 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
           {needsFilling && <Badge variant="needsFilling">Edit placeholders</Badge>}
           {prompt.source_label && (
             <span className={cn(
-              'text-[9.5px] font-[700] tracking-[0.05em] uppercase',
+              'text-label font-[700] tracking-[0.06em] uppercase',
               prompt.source_label === 'Shopify' ? 'text-fg' : 'text-brand-gray'
             )}>
               {prompt.source_label}
             </span>
           )}
           {prompt.level && (
-            <span className="text-[9.5px] font-[700] tracking-[0.05em] uppercase text-brand-gray">
+            <span className="text-label font-[700] tracking-[0.06em] uppercase text-brand-gray">
               {prompt.level}
             </span>
           )}
         </div>
 
-        <h1 className="font-serif text-[28px] leading-tight text-brand-black mb-2">
+        <h1 className="font-serif text-h1 leading-[1.08] text-brand-black mb-3">
           {prompt.title}
         </h1>
         {prompt.short_description && (
-          <p className="text-[15px] text-brand-gray font-[500] leading-relaxed">
+          <p className="text-body text-brand-gray font-[600] leading-relaxed max-w-3xl">
             {prompt.short_description}
           </p>
         )}
@@ -99,22 +99,22 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
 
       {/* When to use */}
       {prompt.when_to_use && (
-        <div className="mb-6 bg-lg/10 border border-lg/30 rounded-xl p-4">
-          <h2 className="text-[10px] font-[800] uppercase tracking-[0.12em] text-dg opacity-70 mb-2">
+        <div className="mb-8 bg-lg/10 border border-lg/30 rounded-xl p-5">
+          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-dg/80 mb-2">
             When this prompt is useful
           </h2>
-          <p className="text-[13.5px] text-brand-text font-[500] leading-relaxed">
+          <p className="text-body-sm text-brand-text font-[600] leading-relaxed">
             {prompt.when_to_use}
           </p>
         </div>
       )}
 
       {/* Metadata chips */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-8">
         {prompt.use_cases?.map(uc => (
           <span
             key={uc}
-            className="text-[11px] font-[700] px-2.5 py-1 bg-cream border border-brand-border rounded-full text-brand-gray"
+            className="text-caption font-[700] px-3 py-1.5 bg-cream border border-brand-border rounded-full text-brand-gray"
           >
             {USE_CASE_LABELS[uc] ?? uc}
           </span>
@@ -122,7 +122,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
         {prompt.data_sources?.map(ds => (
           <span
             key={ds}
-            className="text-[11px] font-[700] px-2.5 py-1 bg-dg/5 border border-dg/10 rounded-full text-dg"
+            className="text-caption font-[700] px-3 py-1.5 bg-dg/5 border border-dg/10 rounded-full text-dg"
           >
             {ds}
           </span>
@@ -130,38 +130,38 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       </div>
 
       {/* Prompt body */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray">
+      <div className="mb-7">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray">
             Prompt
           </h2>
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 text-[11.5px] font-[700] text-brand-gray hover:text-dg transition-colors"
+            className="inline-flex items-center gap-1.5 text-caption font-[700] text-brand-gray hover:text-dg transition-colors"
           >
             <Share2 size={12} />
             Share
           </button>
         </div>
-        <div className="bg-white border border-brand-border rounded-xl p-5">
-          <pre className="prompt-body text-[13px] leading-[1.72] text-brand-text whitespace-pre-wrap font-sans font-[500]">
+        <div className="bg-white border border-brand-border rounded-xl p-6 shadow-card-soft">
+          <pre className="prompt-body text-body leading-[1.72] text-brand-text whitespace-pre-wrap font-sans font-[600]">
             {builtPrompt}
           </pre>
         </div>
       </div>
 
       {/* Copy button */}
-      <div className="mb-8">
+      <div className="mb-10">
         <CopyButtonFull prompt={prompt} />
       </div>
 
       {/* Caveats */}
       {prompt.caveats && (
-        <div className="mb-6 border border-brand-border rounded-xl p-4">
-          <h2 className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-2">
+        <div className="mb-8 border border-brand-border rounded-xl p-5 bg-white">
+          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-2">
             Caveats &amp; notes
           </h2>
-          <p className="text-[13px] text-brand-text font-[500] leading-relaxed whitespace-pre-wrap">
+          <p className="text-body-sm text-brand-text font-[600] leading-relaxed whitespace-pre-wrap">
             {prompt.caveats}
           </p>
         </div>
@@ -169,8 +169,8 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
 
       {/* Follow-up prompts */}
       {followUpPrompts.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-3">
+        <div className="mb-8">
+          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-3">
             Follow-up prompts
           </h2>
           <div className="space-y-2">
@@ -180,7 +180,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
                 <Link
                   key={p.id}
                   href={`/prompts/${p.slug}`}
-                  className="block bg-white border border-brand-border rounded-xl p-3.5 hover:border-fg hover:shadow-sm transition-all group"
+                  className="block bg-white border border-brand-border rounded-xl p-4 hover:border-fg hover:shadow-card-soft transition-all group"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     {cat && cat.value !== 'All' && (
@@ -189,9 +189,9 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
                       </span>
                     )}
                   </div>
-                  <div className="font-serif text-[15px] group-hover:text-fg transition-colors">{p.title}</div>
+                  <div className="font-serif text-h3 leading-[1.2] group-hover:text-fg transition-colors">{p.title}</div>
                   {p.short_description && (
-                    <div className="text-[12px] text-brand-gray mt-0.5">{p.short_description}</div>
+                    <div className="text-caption text-brand-gray mt-1">{p.short_description}</div>
                   )}
                 </Link>
               )
@@ -201,7 +201,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       )}
 
       {/* Meta footer */}
-      <div className="border-t border-brand-border pt-4 flex flex-wrap gap-4 text-[11.5px] text-brand-gray font-[500]">
+      <div className="border-t border-brand-border pt-5 flex flex-wrap gap-5 text-caption text-brand-gray font-[600]">
         {prompt.owner_name && (
           <div className="flex items-center gap-1.5">
             <User size={12} />

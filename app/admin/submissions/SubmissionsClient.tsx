@@ -93,7 +93,7 @@ export function SubmissionsClient({ submissions }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-serif text-[26px] text-brand-black">Submissions</h1>
+        <h1 className="font-serif text-h2 text-brand-black">Submissions</h1>
         {/* Filter tabs */}
         <div className="flex border border-brand-border rounded-lg p-[3px] gap-0.5">
           {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
@@ -101,14 +101,14 @@ export function SubmissionsClient({ submissions }: Props) {
               key={f}
               onClick={() => setFilter(f)}
               className={cn(
-                'px-3 py-1.5 rounded-md text-[12px] font-[700] transition-colors',
+                'h-8 px-3 rounded-md text-caption font-[700] transition-colors',
                 filter === f
                   ? 'bg-dg text-white'
                   : 'text-brand-gray hover:text-dg'
               )}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
-              <span className="ml-1.5 text-[10px]">
+              <span className="ml-1.5 text-label">
                 {f === 'all' ? submissions.length : submissions.filter(s => s.status === f).length}
               </span>
             </button>
@@ -118,7 +118,7 @@ export function SubmissionsClient({ submissions }: Props) {
 
       <div className="space-y-3">
         {filtered.length === 0 && (
-          <div className="bg-white border border-brand-border rounded-xl p-8 text-center text-brand-gray text-[13px]">
+          <div className="bg-white border border-brand-border rounded-xl p-8 text-center text-brand-gray text-body-sm font-[600]">
             No {filter === 'all' ? '' : filter} submissions.
           </div>
         )}
@@ -134,13 +134,13 @@ export function SubmissionsClient({ submissions }: Props) {
               onClick={() => setSelected(selected?.id === submission.id ? null : submission)}
             >
               <div className="flex-1 min-w-0">
-                <div className="font-[700] text-[14px] text-brand-black truncate">{submission.title}</div>
-                <div className="text-[12px] text-brand-gray font-[500] mt-0.5">
+                <div className="font-[700] text-body text-brand-black truncate">{submission.title}</div>
+                <div className="text-caption text-brand-gray font-[600] mt-0.5">
                   {submission.submitter_name} &lt;{submission.submitter_email}&gt; · {formatDate(submission.created_at)}
                 </div>
               </div>
               <span className={cn(
-                'text-[9.5px] font-[800] uppercase tracking-[0.08em] px-2 py-1 rounded-full flex-shrink-0',
+                'text-label font-[800] uppercase tracking-[0.08em] px-2.5 py-1 rounded-full flex-shrink-0',
                 submission.status === 'pending' && 'bg-[#fff0e6] text-[#a84a00]',
                 submission.status === 'approved' && 'bg-[#e6f4ed] text-[#1a5c35]',
                 submission.status === 'rejected' && 'bg-[#f0f0f0] text-[#444]',
@@ -158,37 +158,37 @@ export function SubmissionsClient({ submissions }: Props) {
               <div className="border-t border-brand-border px-5 py-5 space-y-4">
                 {submission.short_description && (
                   <div>
-                    <div className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-1">
+                    <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
                       Description
                     </div>
-                    <p className="text-[13px] text-brand-text font-[500]">
+                    <p className="text-body-sm text-brand-text font-[600]">
                       {submission.short_description}
                     </p>
                   </div>
                 )}
 
                 <div>
-                  <div className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-1">
+                  <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
                     Category
                   </div>
-                  <span className="text-[12px] font-[700] text-brand-black">{submission.category}</span>
+                  <span className="text-caption font-[700] text-brand-black">{submission.category}</span>
                 </div>
 
                 <div>
-                  <div className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-1.5">
+                  <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1.5">
                     Prompt body
                   </div>
-                  <pre className="bg-cream border border-brand-border rounded-lg p-4 text-[12px] text-brand-text whitespace-pre-wrap font-sans font-[500] leading-relaxed max-h-64 overflow-y-auto">
+                  <pre className="bg-cream border border-brand-border rounded-lg p-4 text-body-sm text-brand-text whitespace-pre-wrap font-sans font-[600] leading-relaxed max-h-64 overflow-y-auto">
                     {submission.prompt_body}
                   </pre>
                 </div>
 
                 {submission.notes && (
                   <div>
-                    <div className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-1">
+                    <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
                       Notes from submitter
                     </div>
-                    <p className="text-[13px] text-brand-text font-[500]">{submission.notes}</p>
+                    <p className="text-body-sm text-brand-text font-[600]">{submission.notes}</p>
                   </div>
                 )}
 
@@ -207,10 +207,10 @@ export function SubmissionsClient({ submissions }: Props) {
 
                 {submission.reviewer_notes && submission.status !== 'pending' && (
                   <div>
-                    <div className="text-[10px] font-[800] uppercase tracking-[0.12em] text-brand-gray mb-1">
+                    <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
                       Reviewer notes
                     </div>
-                    <p className="text-[13px] text-brand-text font-[500]">{submission.reviewer_notes}</p>
+                    <p className="text-body-sm text-brand-text font-[600]">{submission.reviewer_notes}</p>
                   </div>
                 )}
 

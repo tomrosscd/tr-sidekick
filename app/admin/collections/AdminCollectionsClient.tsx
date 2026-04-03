@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { FormLabel } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
 import { cn, slugify } from '@/lib/utils'
 import { Plus, Trash2, ExternalLink, Star } from 'lucide-react'
 import Link from 'next/link'
@@ -84,7 +85,7 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-serif text-[26px] text-brand-black">Collections</h1>
+        <h1 className="font-serif text-h2 text-brand-black">Collections</h1>
         <Button size="sm" onClick={() => setShowForm(v => !v)}>
           <Plus size={14} />
           New collection
@@ -97,7 +98,7 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
           onSubmit={handleCreate}
           className="bg-white border border-brand-border rounded-xl p-5 mb-6 space-y-4"
         >
-          <h2 className="font-[800] text-[14px] text-brand-black">New collection</h2>
+          <h2 className="font-[800] text-body text-brand-black">New collection</h2>
           <div>
             <FormLabel htmlFor="col-title">Title</FormLabel>
             <Input
@@ -124,7 +125,7 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
               <select
                 value={form.visibility}
                 onChange={e => setForm(p => ({ ...p, visibility: e.target.value as Visibility }))}
-                className="border border-brand-border rounded-lg px-3 py-2 text-[12.5px] font-[600] focus:outline-none focus:border-fg"
+                className="h-10 border border-brand-border rounded-lg px-3.5 text-body-sm font-[700] bg-white focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20"
               >
                 <option value="public">Public</option>
                 <option value="internal">Internal</option>
@@ -132,13 +133,11 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
               </select>
             </div>
             <label className="flex items-center gap-2 cursor-pointer mt-4">
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={form.is_featured}
-                onChange={e => setForm(p => ({ ...p, is_featured: e.target.checked }))}
-                className="rounded"
+                onCheckedChange={checked => setForm(p => ({ ...p, is_featured: checked === true }))}
               />
-              <span className="text-[12.5px] font-[700] text-brand-gray">Featured</span>
+              <span className="text-caption font-[700] text-brand-gray">Featured</span>
             </label>
           </div>
           <div className="flex justify-end gap-3">
@@ -155,7 +154,7 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
       {/* Collections list */}
       <div className="space-y-3">
         {collections.length === 0 && (
-          <div className="bg-white border border-brand-border rounded-xl p-8 text-center text-brand-gray text-[13px]">
+          <div className="bg-white border border-brand-border rounded-xl p-8 text-center text-brand-gray text-body-sm font-[600]">
             No collections yet. Create one to get started.
           </div>
         )}
@@ -166,22 +165,22 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
             className="bg-white border border-brand-border rounded-xl px-5 py-4 flex items-center gap-4"
           >
             <div className="flex-1 min-w-0">
-              <div className="font-[700] text-[14px] text-brand-black">{collection.title}</div>
+              <div className="font-[700] text-body text-brand-black">{collection.title}</div>
               {collection.description && (
-                <div className="text-[12px] text-brand-gray font-[500] mt-0.5 truncate">
+                <div className="text-caption text-brand-gray font-[600] mt-0.5 truncate">
                   {collection.description}
                 </div>
               )}
               <div className="flex items-center gap-3 mt-1.5">
                 <span className={cn(
-                  'text-[9.5px] font-[800] uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-full',
+                  'text-label font-[800] uppercase tracking-[0.08em] px-2 py-1 rounded-full',
                   collection.visibility === 'public' ? 'bg-[#e6f4ed] text-[#1a5c35]' :
                   collection.visibility === 'internal' ? 'bg-[#edf0f7] text-[#2d3d6b]' :
                   'bg-[#f0f0f0] text-[#444]'
                 )}>
                   {collection.visibility}
                 </span>
-                <span className="text-[11.5px] text-brand-gray font-[500]">
+                <span className="text-caption text-brand-gray font-[600]">
                   {collection.items?.[0]?.count ?? 0} prompts
                 </span>
               </div>

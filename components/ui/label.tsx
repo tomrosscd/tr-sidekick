@@ -6,7 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const labelVariants = cva(
-  'text-[9px] font-[800] uppercase tracking-[0.14em] text-lg opacity-70 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+  'text-label font-[800] uppercase tracking-[0.08em] text-lg opacity-75 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
 )
 
 const Label = React.forwardRef<
@@ -30,7 +30,7 @@ export const FormLabel = React.forwardRef<
   <label
     ref={ref}
     className={cn(
-      'block text-[11px] font-[700] text-brand-gray uppercase tracking-[0.1em] mb-1.5',
+      'block text-label font-[800] text-brand-gray uppercase tracking-[0.08em] mb-2',
       className
     )}
     {...props}

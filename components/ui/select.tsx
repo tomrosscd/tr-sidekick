@@ -16,9 +16,9 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-9 w-full items-center justify-between rounded-lg border border-brand-border bg-cream px-3 py-2 text-sm font-[600] text-brand-black',
+      'flex h-10 w-full items-center justify-between rounded-lg border border-brand-border bg-white px-3.5 py-2 text-body-sm font-[700] text-brand-black',
       'placeholder:text-brand-gray',
-      'focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20',
+      'focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20 focus:ring-offset-2 focus:ring-offset-cream',
       'disabled:cursor-not-allowed disabled:opacity-50',
       '[&>span]:line-clamp-1',
       className
@@ -69,7 +69,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-brand-border bg-white shadow-md',
+        'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-brand-border bg-white shadow-card-hover',
         'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
         'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2',
@@ -103,7 +103,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn('py-1.5 pl-8 pr-2 text-[9.5px] font-[800] uppercase tracking-[0.1em] text-brand-gray', className)}
+    className={cn('py-1.5 pl-8 pr-2 text-label uppercase text-brand-gray', className)}
     {...props}
   />
 ))
@@ -116,7 +116,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm font-[600] text-brand-black outline-none',
+      'relative flex w-full cursor-default select-none items-center rounded-md py-2 pl-8 pr-2 text-body-sm font-[700] text-brand-black outline-none',
       'focus:bg-cream focus:text-dg',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className

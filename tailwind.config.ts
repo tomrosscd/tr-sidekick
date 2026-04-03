@@ -64,10 +64,25 @@ const config: Config = {
         serif: ['Instrument Serif', 'Georgia', 'serif'],
         sans: ['Darker Grotesque', 'system-ui', 'sans-serif'],
       },
+      fontSize: {
+        display: ['3rem', { lineHeight: '1.05', fontWeight: '400' }],
+        h1: ['2.125rem', { lineHeight: '1.12', fontWeight: '400' }],
+        h2: ['1.625rem', { lineHeight: '1.2', fontWeight: '400' }],
+        h3: ['1.25rem', { lineHeight: '1.25', fontWeight: '500' }],
+        body: ['1.0625rem', { lineHeight: '1.55', fontWeight: '600' }],
+        'body-sm': ['0.9375rem', { lineHeight: '1.45', fontWeight: '600' }],
+        caption: ['0.8125rem', { lineHeight: '1.35', fontWeight: '600' }],
+        label: ['0.6875rem', { lineHeight: '1.2', fontWeight: '800', letterSpacing: '0.08em' }],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      boxShadow: {
+        'card-soft': '0 2px 10px rgba(39, 56, 47, 0.05)',
+        'card-hover': '0 10px 26px rgba(39, 56, 47, 0.12)',
+        'focus-soft': '0 0 0 3px rgba(73, 158, 107, 0.18)',
       },
       keyframes: {
         'accordion-down': {

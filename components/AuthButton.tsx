@@ -49,7 +49,7 @@ export function AuthButton() {
 
   if (loading) {
     return (
-      <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse" />
+      <div className="w-10 h-10 rounded-lg bg-white/10 animate-pulse" />
     )
   }
 
@@ -57,7 +57,7 @@ export function AuthButton() {
     return (
       <button
         onClick={handleSignIn}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] text-[12px] font-[700] bg-white/10 text-white/80 hover:bg-white/20 hover:text-white transition-colors border border-white/15"
+        className="inline-flex h-10 items-center gap-1.5 px-3.5 rounded-lg text-caption font-[700] bg-white/10 text-white/85 hover:bg-white/20 hover:text-white transition-colors border border-white/15"
       >
         <LogIn size={13} />
         Sign in
@@ -75,8 +75,8 @@ export function AuthButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 rounded-[6px] px-2 py-1.5 hover:bg-white/10 transition-colors focus:outline-none">
-          <div className="w-7 h-7 rounded-full bg-lg/30 border border-lg/40 flex items-center justify-center text-[11px] font-[800] text-lg">
+        <button className="flex h-10 items-center gap-2 rounded-lg px-2.5 hover:bg-white/10 transition-colors focus:outline-none">
+          <div className="w-8 h-8 rounded-full bg-lg/30 border border-lg/40 flex items-center justify-center text-caption font-[800] text-lg">
             {initials}
           </div>
           <ChevronDown size={12} className="text-white/60" />

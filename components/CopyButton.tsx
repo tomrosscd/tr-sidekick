@@ -48,7 +48,7 @@ export function CopyButton({ prompt, className, size = 'default' }: CopyButtonPr
       <button
         onClick={handleCopy}
         className={cn(
-          'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] text-[11.5px] font-[700] transition-colors',
+          'inline-flex h-9 items-center gap-1.5 px-3 rounded-md text-caption font-[700] transition-colors',
           copied
             ? 'bg-fg text-white'
             : 'bg-dg text-white hover:bg-fg',
@@ -65,7 +65,7 @@ export function CopyButton({ prompt, className, size = 'default' }: CopyButtonPr
     <button
       onClick={handleCopy}
       className={cn(
-        'inline-flex items-center gap-[5px] px-3.5 py-[7px] rounded-[7px] text-[12px] font-[700] transition-colors',
+        'inline-flex h-10 items-center gap-1.5 px-3.5 rounded-lg text-body-sm font-[700] transition-colors',
         copied
           ? 'bg-fg text-white'
           : 'bg-dg text-white hover:bg-fg',
@@ -108,7 +108,7 @@ export function CopyButtonFull({ prompt, className }: Omit<CopyButtonProps, 'siz
     <button
       onClick={handleCopy}
       className={cn(
-        'flex items-center justify-center gap-2 w-full px-5 py-3 rounded-[8px] text-[13px] font-[700] transition-colors',
+        'flex h-12 items-center justify-center gap-2 w-full px-5 rounded-lg text-body-sm font-[800] transition-colors',
         copied
           ? 'bg-fg text-white'
           : 'bg-dg text-white hover:bg-fg',

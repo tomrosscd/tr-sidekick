@@ -107,7 +107,7 @@ export function PromptSubmitForm() {
   const categoryOptions = CATEGORIES.filter(c => c.value !== 'All')
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-7">
       {/* Submitter info */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -180,7 +180,7 @@ export function PromptSubmitForm() {
         <FormLabel htmlFor="prompt_body">
           Prompt body <span className="text-red-500">*</span>
         </FormLabel>
-        <p className="text-[11.5px] text-brand-gray mb-2">
+        <p className="text-caption text-brand-gray mb-2.5 font-[600]">
           Use <code className="bg-brand-border/40 px-1 rounded">{'{{TF}}'}</code> for timeframe and{' '}
           <code className="bg-brand-border/40 px-1 rounded">{'{{CMP}}'}</code> for comparison period.
           Use <code className="bg-brand-border/40 px-1 rounded">[Placeholder]</code> for user-editable values.
@@ -188,7 +188,7 @@ export function PromptSubmitForm() {
         <Textarea
           id="prompt_body"
           placeholder="Act as my Shopify analyst…"
-          className="min-h-[240px] font-mono text-[12px]"
+          className="min-h-[260px] font-mono text-[13px] leading-relaxed"
           value={form.prompt_body}
           onChange={e => update('prompt_body', e.target.value)}
           required
@@ -210,17 +210,17 @@ export function PromptSubmitForm() {
       {/* Use cases */}
       <div>
         <FormLabel>Use cases</FormLabel>
-        <div className="flex flex-wrap gap-2 mt-1">
+        <div className="flex flex-wrap gap-2 mt-2">
           {USE_CASE_OPTIONS.map(uc => (
             <label
               key={uc}
-              className="flex items-center gap-2 cursor-pointer group"
+              className="flex items-center gap-2 cursor-pointer group rounded-md border border-brand-border/70 bg-white px-2.5 py-1.5 hover:border-fg/40 transition-colors"
             >
               <Checkbox
                 checked={form.use_cases.includes(uc)}
                 onCheckedChange={() => toggleUseCase(uc)}
               />
-              <span className="text-[12px] font-[600] text-brand-gray group-hover:text-dg transition-colors">
+              <span className="text-caption font-[700] text-brand-gray group-hover:text-dg transition-colors">
                 {USE_CASE_LABELS[uc]}
               </span>
             </label>
@@ -263,7 +263,7 @@ export function PromptSubmitForm() {
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-2 border-t border-brand-border">
+      <div className="flex items-center justify-end gap-3 pt-3 border-t border-brand-border">
         <Button
           type="button"
           variant="outline"

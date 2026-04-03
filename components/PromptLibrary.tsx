@@ -32,7 +32,6 @@ function PromptLibraryInner({ isAdmin }: { isAdmin: boolean }) {
 
   // Filters from URL
   const category = searchParams.get('cat') ?? 'All'
-  const source = searchParams.get('src') ?? 'all'
   const query = searchParams.get('q') ?? ''
   const level = searchParams.get('level') ?? ''
   const useCasesRaw = searchParams.get('useCases') ?? ''
@@ -62,8 +61,6 @@ function PromptLibraryInner({ isAdmin }: { isAdmin: boolean }) {
   // Client-side filtering
   const filtered = prompts.filter(p => {
     if (category !== 'All' && p.category !== category) return false
-    if (source === 'convert' && p.source_label !== 'Convert') return false
-    if (source === 'shopify' && p.source_label !== 'Shopify') return false
     if (level && p.level !== level) return false
     if (useCases.length > 0 && !useCases.some(uc => p.use_cases?.includes(uc))) return false
     if (featured && !p.is_featured) return false
@@ -84,14 +81,10 @@ function PromptLibraryInner({ isAdmin }: { isAdmin: boolean }) {
     return true
   })
 
-  // Category counts (based on source filter only, not category/search)
+  // Category counts (based on all loaded prompts, not category/search)
   const categoryCounts = CATEGORIES.reduce<Record<string, number>>((acc, cat) => {
     if (cat.value === 'All') return acc
-    acc[cat.value] = prompts.filter(p => {
-      if (source === 'convert' && p.source_label !== 'Convert') return false
-      if (source === 'shopify' && p.source_label !== 'Shopify') return false
-      return p.category === cat.value
-    }).length
+    acc[cat.value] = prompts.filter(p => p.category === cat.value).length
     return acc
   }, {})
 
@@ -107,10 +100,10 @@ function PromptLibraryInner({ isAdmin }: { isAdmin: boolean }) {
       <FilterBar totalCounts={categoryCounts} isAdmin={isAdmin} />
 
       {/* Main content */}
-      <main className="max-w-[1500px] mx-auto px-5 py-4 pb-16">
+      <main className="max-w-[1500px] mx-auto px-5 py-6 pb-16">
         {/* Meta bar */}
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-          <span className="text-[13px] text-brand-gray font-[600]">
+        <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+          <span className="text-body-sm text-brand-gray font-[700]">
             Showing{' '}
             <strong className="text-dg">
               {loading ? '…' : filtered.length}
@@ -121,7 +114,7 @@ function PromptLibraryInner({ isAdmin }: { isAdmin: boolean }) {
 
         {/* Grid */}
         {loading ? (
-          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <PromptCardSkeleton key={i} />
             ))}
@@ -129,7 +122,7 @@ function PromptLibraryInner({ isAdmin }: { isAdmin: boolean }) {
         ) : filtered.length === 0 ? (
           <EmptyState query={query} />
         ) : (
-          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {filtered.map(p => (
               <PromptCard key={p.id} prompt={p} />
             ))}
@@ -144,8 +137,8 @@ function EmptyState({ query }: { query: string }) {
   return (
     <div className="col-span-full text-center py-16 px-5">
       <div className="text-4xl mb-3">🔍</div>
-      <h3 className="font-serif text-[22px] text-dg mb-2">No prompts found</h3>
-      <p className="text-brand-gray text-[14px]">
+      <h3 className="font-serif text-h2 text-dg mb-2">No prompts found</h3>
+      <p className="text-brand-gray text-body">
         {query
           ? `No results for "${query}". Try a different search term or clear your filters.`
           : 'Try adjusting your filters or clearing your search.'}
