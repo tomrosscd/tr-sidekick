@@ -2171,31 +2171,29 @@ VALUES
 -- COLLECTION ITEMS — Post-Launch Review Pack
 -- ────────────────────────────────────────────────────────────────
 
-WITH col AS (SELECT id FROM prompt_collections WHERE slug = 'post-launch-review'),
-     p1  AS (SELECT id FROM prompts WHERE slug = 'executive-performance-summary'),
-     p2  AS (SELECT id FROM prompts WHERE slug = 'funnel-and-checkout-performance'),
-     p3  AS (SELECT id FROM prompts WHERE slug = 'product-and-merchandising-performance'),
-     p4  AS (SELECT id FROM prompts WHERE slug = 'device-and-channel-efficiency'),
-     p5  AS (SELECT id FROM prompts WHERE slug = 'homepage-and-entry-page-performance')
 INSERT INTO prompt_collection_items (collection_id, prompt_id, sort_order)
-SELECT col.id, p.id, s.sort_order
-FROM col, (VALUES
-  ((SELECT id FROM p1), 1),
-  ((SELECT id FROM p2), 2),
-  ((SELECT id FROM p3), 3),
-  ((SELECT id FROM p4), 4),
-  ((SELECT id FROM p5), 5)
-) AS s(prompt_id, sort_order)
-CROSS JOIN LATERAL (SELECT s.prompt_id AS id) p;
+SELECT
+  (SELECT id FROM prompt_collections WHERE slug = 'post-launch-review'),
+  p.id,
+  t.sort_order
+FROM (VALUES
+  ('executive-performance-summary',        1),
+  ('funnel-and-checkout-performance',      2),
+  ('product-and-merchandising-performance',3),
+  ('device-and-channel-efficiency',        4),
+  ('homepage-and-entry-page-performance',  5)
+) AS t(slug, sort_order)
+JOIN prompts p ON p.slug = t.slug;
 
 -- ────────────────────────────────────────────────────────────────
 -- COLLECTION ITEMS — BFCM Preparation Pack
 -- ────────────────────────────────────────────────────────────────
 
-WITH col AS (SELECT id FROM prompt_collections WHERE slug = 'bfcm-preparation')
 INSERT INTO prompt_collection_items (collection_id, prompt_id, sort_order)
-SELECT col.id, p.id, ROW_NUMBER() OVER () AS sort_order
-FROM col, prompts p
+SELECT
+  (SELECT id FROM prompt_collections WHERE slug = 'bfcm-preparation'),
+  p.id,
+  ROW_NUMBER() OVER (ORDER BY p.source_label DESC, p.created_at)
+FROM prompts p
 WHERE p.category = 'BFCM'
-  AND p.status = 'published'
-ORDER BY p.source_label DESC, p.created_at;
+  AND p.status = 'published';
