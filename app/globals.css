@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts ──────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Darker+Grotesque:wght@400;500;600;700;800;900&display=swap');
+
+/* ── CSS Variables (shadcn/ui + brand) ─────────────────────────────────────── */
+@layer base {
+  :root {
+    /* Brand tokens */
+    --dg: #27382f;
+    --lg: #c9deb6;
+    --fg: #499e6b;
+    --cream: #faf9f7;
+    --brand-black: #171717;
+    --brand-yellow: #ffec82;
+    --brand-orange: #ffa366;
+    --brand-gray: #7a8a84;
+    --brand-border: #e4ede8;
+    --brand-text: #3c4840;
+
+    /* shadcn/ui mapping to brand */
+    --background: 250 249 247;     /* cream */
+    --foreground: 23 23 23;        /* black */
+    --card: 255 255 255;
+    --card-foreground: 23 23 23;
+    --popover: 255 255 255;
+    --popover-foreground: 23 23 23;
+    --primary: 39 56 47;           /* dg */
+    --primary-foreground: 255 255 255;
+    --secondary: 201 222 182;      /* lg */
+    --secondary-foreground: 39 56 47;
+    --muted: 244 243 241;
+    --muted-foreground: 122 138 132;  /* gray */
+    --accent: 201 222 182;
+    --accent-foreground: 39 56 47;
+    --destructive: 220 38 38;
+    --destructive-foreground: 255 255 255;
+    --border: 228 237 232;         /* brand-border */
+    --input: 228 237 232;
+    --ring: 73 158 107;            /* fg */
+    --radius: 0.5rem;
+  }
+}
+
+/* ── Base styles ───────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-brand-black font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+/* ── Typography utilities ──────────────────────────────────────────────────── */
+@layer utilities {
+  .font-serif {
+    font-family: 'Instrument Serif', Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: 'Darker Grotesque', system-ui, sans-serif;
+  }
+
+  /* Category pills */
+  .pill-CRO        { @apply bg-[#e6f4ed] text-[#1a5c35]; }
+  .pill-LTV        { @apply bg-[#fef8dc] text-[#7a5800]; }
+  .pill-BFCM       { @apply bg-[#fff0e6] text-[#b03800]; }
+  .pill-Strategy   { @apply bg-[#edf0f7] text-[#2d3d6b]; }
+  .pill-Acquisition { @apply bg-[#f0e8ff] text-[#531fa0]; }
+  .pill-SEO        { @apply bg-[#e6effe] text-[#1044a8]; }
+  .pill-Subscriptions { @apply bg-[#fce8f5] text-[#7d0e52]; }
+  .pill-Tech       { @apply bg-[#f0f0f0] text-[#444]; }
+
+  /* Prompt highlight marks */
+  .mark-tf {
+    @apply bg-[rgba(201,222,182,0.5)] rounded px-[3px] text-[#1a4228] font-bold not-italic;
+  }
+  .mark-cmp {
+    @apply bg-[rgba(255,236,130,0.6)] rounded px-[3px] text-[#5e4800] font-bold not-italic;
+  }
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Prompt body prose ─────────────────────────────────────────────────────── */
+.prompt-body {
+  font-size: 11.5px;
+  line-height: 1.72;
+  color: var(--brand-text);
+  white-space: pre-wrap;
+  font-family: 'Darker Grotesque', system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* ── Focus ring ────────────────────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid #499e6b;
+  outline-offset: 2px;
+}
