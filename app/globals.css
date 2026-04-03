@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /* ── Google Fonts ──────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Darker+Grotesque:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* ── CSS Variables (shadcn/ui + brand) ─────────────────────────────────────── */
+/* ── Design tokens: namespaces + semantics ────────────────────────────────── */
 @layer base {
   :root {
-    /* Brand tokens */
+    /* Legacy brand (Tailwind colour plugins + utilities) */
     --dg: #27382f;
     --lg: #c9deb6;
     --fg: #499e6b;
@@ -20,26 +20,72 @@
     --brand-border: #e4ede8;
     --brand-text: #3c4840;
 
-    /* shadcn/ui mapping to brand */
-    --background: 250 249 247;     /* cream */
-    --foreground: 23 23 23;        /* black */
+    /* Sidekick namespace (--sk-*) */
+    --sk-header: #1a2520;
+    --sk-bg: #e4ebe7;
+    --sk-surface: #ffffff;
+    --sk-surface-muted: #e2ebe5;
+    --sk-accent: #2d7a57;
+    --sk-accent-bright: #499e6b;
+    --sk-text: #0f1814;
+    --sk-text-muted: #4a5a52;
+    --sk-border: #b5c4bb;
+    --sk-border-strong: #8aa896;
+    --sk-tab-active-bg: #cfe0d5;
+    --sk-chip-count-bg: #c9deb6;
+    --sk-chip-count-fg: #1a3328;
+    --sk-filter-mute-bg: rgba(232, 242, 236, 0.72);
+
+    /* Claude Skills namespace (--cl-*) */
+    --cl-header: #f3f1ec;
+    --cl-bg: #f4f2ec;
+    --cl-surface: #fffdf9;
+    --cl-surface-muted: #f5f3ee;
+    --cl-accent: #5a7468;
+    --cl-accent-soft: #7d9186;
+    --cl-text: #2a3630;
+    --cl-text-muted: #6f7a74;
+    --cl-border: #e4e1d9;
+    --cl-border-soft: #efede8;
+    --cl-tab-active-bg: #eae8e2;
+    --cl-chip-count-bg: #e8ebe4;
+    --cl-chip-count-fg: #3a4b43;
+    --cl-filter-mute-bg: rgba(247, 245, 240, 0.92);
+    --cl-toggle-bg: rgba(255, 253, 249, 0.94);
+    --cl-toggle-border: #ddd9d2;
+    --cl-toggle-inactive-bg: rgba(245, 243, 238, 0.85);
+    --cl-toggle-inactive-hover: rgba(237, 234, 228, 0.95);
+
+    /* Convert namespace (--cv-*) — footer & editorial blocks only */
+    --cv-cream: #faf9f7;
+    --cv-dg: #27382f;
+    --cv-lg: #c9deb6;
+    --cv-fg: #499e6b;
+    --cv-text: #3c4840;
+    --cv-muted: #7a8a84;
+    --cv-border: #e4ede8;
+    --cv-elevated: #ffffff;
+
+    /* shadcn/ui (light) */
+    --background: 250 249 247;
+    --foreground: 23 23 23;
     --card: 255 255 255;
     --card-foreground: 23 23 23;
     --popover: 255 255 255;
     --popover-foreground: 23 23 23;
-    --primary: 39 56 47;           /* dg */
+    --primary: 39 56 47;
     --primary-foreground: 255 255 255;
-    --secondary: 201 222 182;      /* lg */
+    --secondary: 201 222 182;
     --secondary-foreground: 39 56 47;
     --muted: 244 243 241;
-    --muted-foreground: 122 138 132;  /* gray */
+    --muted-foreground: 122 138 132;
     --accent: 201 222 182;
     --accent-foreground: 39 56 47;
     --destructive: 220 38 38;
     --destructive-foreground: 255 255 255;
-    --border: 228 237 232;         /* brand-border */
+    --border: 228 237 232;
     --input: 228 237 232;
-    --ring: 73 158 107;            /* fg */
+    --ring: 73 158 107;
     --radius: 0.625rem;
     --radius-sm: 0.5rem;
     --radius-lg: 0.875rem;
@@ -53,6 +99,168 @@
     --space-10: 2.5rem;
     --shadow-card-soft: 0 2px 10px rgba(39, 56, 47, 0.05);
     --shadow-card-hover: 0 10px 26px rgba(39, 56, 47, 0.12);
+    --shadow-floating-glass: 0 14px 36px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    --shadow-glass-pill: 0 8px 20px rgba(39, 56, 47, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+    /* Fallback shell (Sidekick) until / while LibraryThemeSync runs */
+    --shell-bg: var(--sk-bg);
+    --shell-header-bg: var(--sk-header);
+    --shell-fg: var(--sk-text);
+    --shell-muted-fg: var(--sk-text-muted);
+    --shell-border: var(--sk-border);
+    --shell-elevated: var(--sk-surface);
+    --shell-muted: var(--sk-surface-muted);
+
+    --library-surface: var(--sk-surface);
+    --library-surface-muted: var(--sk-surface-muted);
+    --library-accent: var(--sk-accent);
+    --library-chip-bg: #d9e8e0;
+    --library-chip-fg: #1a3328;
+
+    --card-border: var(--sk-border-strong);
+
+    --filter-bar-bg: var(--sk-surface);
+    --filter-border: var(--sk-border);
+    --filter-tab-active-fg: var(--sk-text);
+    --filter-tab-active-border: var(--sk-accent);
+    --filter-tab-active-bg: var(--sk-tab-active-bg);
+    --filter-tab-inactive-fg: var(--sk-text-muted);
+    --filter-chip-bg: var(--sk-chip-count-bg);
+    --filter-chip-fg: var(--sk-chip-count-fg);
+    --filter-input-border: var(--sk-border-strong);
+    --filter-input-focus-ring: var(--sk-accent-bright);
+    --filter-panel-bg: var(--sk-filter-mute-bg);
+    --filter-btn-active-bg: var(--sk-text);
+    --filter-btn-active-fg: #ffffff;
+    --filter-clear-hover-fg: var(--sk-text);
+
+    --timeframe-strip-bg: #d8e3dc;
+    --timeframe-border: #aabeb2;
+
+    --tf-label: var(--sk-text-muted);
+    --tf-ctl-bg: rgba(255, 255, 255, 0.12);
+    --tf-ctl-border: rgba(255, 255, 255, 0.48);
+    --tf-ctl-fg: rgba(255, 255, 255, 0.88);
+    --tf-ctl-hover-bg: rgba(255, 255, 255, 0.18);
+    --tf-ctl-active-bg: var(--sk-accent-bright);
+    --tf-ctl-active-border: #ffffff;
+    --tf-ctl-active-fg: #ffffff;
+    --tf-custom-placeholder: rgba(255, 255, 255, 0.48);
+    --tf-preview-bg: rgba(255, 255, 255, 0.14);
+    --tf-preview-fg: #ffffff;
+    --tf-preview-muted: rgba(255, 255, 255, 0.55);
+    --tf-select-bg: #ffffff;
+    --tf-select-border: rgba(255, 255, 255, 0.65);
+    --tf-select-fg: var(--dg);
+    --tf-select-chevron: rgba(39, 56, 47, 0.75);
+  }
+
+  html[data-library='sidekick'],
+  .librarytokens-sidekick {
+    --shell-bg: var(--sk-bg);
+    --shell-header-bg: var(--sk-header);
+    --shell-fg: var(--sk-text);
+    --shell-muted-fg: var(--sk-text-muted);
+    --shell-border: var(--sk-border);
+    --shell-elevated: var(--sk-surface);
+    --shell-muted: var(--sk-surface-muted);
+
+    --library-surface: var(--sk-surface);
+    --library-surface-muted: var(--sk-surface-muted);
+    --library-accent: var(--sk-accent);
+    --library-chip-bg: #d9e8e0;
+    --library-chip-fg: #143226;
+
+    --card-border: var(--sk-border-strong);
+
+    --filter-bar-bg: var(--sk-surface);
+    --filter-border: var(--sk-border);
+    --filter-tab-active-fg: var(--sk-text);
+    --filter-tab-active-border: var(--sk-accent);
+    --filter-tab-active-bg: var(--sk-tab-active-bg);
+    --filter-tab-inactive-fg: var(--sk-text-muted);
+    --filter-chip-bg: var(--sk-chip-count-bg);
+    --filter-chip-fg: var(--sk-chip-count-fg);
+    --filter-input-border: var(--sk-border-strong);
+    --filter-input-focus-ring: var(--sk-accent-bright);
+    --filter-panel-bg: var(--sk-filter-mute-bg);
+    --filter-btn-active-bg: var(--sk-text);
+    --filter-btn-active-fg: #ffffff;
+    --filter-clear-hover-fg: var(--sk-text);
+
+    --timeframe-strip-bg: #d8e3dc;
+    --timeframe-border: #aabeb2;
+
+    --tf-label: var(--sk-text-muted);
+    --tf-ctl-bg: rgba(255, 255, 255, 0.12);
+    --tf-ctl-border: rgba(255, 255, 255, 0.48);
+    --tf-ctl-fg: rgba(255, 255, 255, 0.88);
+    --tf-ctl-hover-bg: rgba(255, 255, 255, 0.18);
+    --tf-ctl-active-bg: var(--sk-accent-bright);
+    --tf-ctl-active-border: #ffffff;
+    --tf-ctl-active-fg: #ffffff;
+    --tf-custom-placeholder: rgba(255, 255, 255, 0.48);
+    --tf-preview-bg: rgba(255, 255, 255, 0.14);
+    --tf-preview-fg: #ffffff;
+    --tf-preview-muted: rgba(255, 255, 255, 0.55);
+    --tf-select-bg: #ffffff;
+    --tf-select-border: rgba(255, 255, 255, 0.65);
+    --tf-select-fg: var(--dg);
+    --tf-select-chevron: rgba(39, 56, 47, 0.75);
+  }
+
+  html[data-library='claude'],
+  .librarytokens-claude {
+    --shell-bg: var(--cl-bg);
+    --shell-header-bg: var(--cl-header);
+    --shell-fg: var(--cl-text);
+    --shell-muted-fg: var(--cl-text-muted);
+    --shell-border: var(--cl-border);
+    --shell-elevated: var(--cl-surface);
+    --shell-muted: var(--cl-surface-muted);
+
+    --library-surface: var(--cl-surface);
+    --library-surface-muted: var(--cl-surface-muted);
+    --library-accent: var(--cl-accent);
+    --library-chip-bg: #e9ebe5;
+    --library-chip-fg: #2f3d36;
+
+    --card-border: var(--cl-border);
+
+    --filter-bar-bg: var(--cl-surface);
+    --filter-border: var(--cl-border-soft);
+    --filter-tab-active-fg: var(--cl-text);
+    --filter-tab-active-border: var(--cl-accent);
+    --filter-tab-active-bg: var(--cl-tab-active-bg);
+    --filter-tab-inactive-fg: var(--cl-text-muted);
+    --filter-chip-bg: var(--cl-chip-count-bg);
+    --filter-chip-fg: var(--cl-chip-count-fg);
+    --filter-input-border: var(--cl-border);
+    --filter-input-focus-ring: var(--cl-accent-soft);
+    --filter-panel-bg: var(--cl-filter-mute-bg);
+    --filter-btn-active-bg: var(--cl-accent);
+    --filter-btn-active-fg: #ffffff;
+    --filter-clear-hover-fg: var(--cl-text);
+
+    --timeframe-strip-bg: #ebe8e2;
+    --timeframe-border: #d8d4cc;
+
+    --tf-label: var(--cl-text-muted);
+    --tf-ctl-bg: #ffffff;
+    --tf-ctl-border: var(--cl-border);
+    --tf-ctl-fg: var(--cl-text);
+    --tf-ctl-hover-bg: var(--cl-surface-muted);
+    --tf-ctl-active-bg: var(--cl-accent);
+    --tf-ctl-active-border: var(--cl-accent);
+    --tf-ctl-active-fg: #ffffff;
+    --tf-custom-placeholder: rgba(42, 54, 48, 0.45);
+    --tf-preview-bg: #ffffff;
+    --tf-preview-fg: var(--cl-text);
+    --tf-preview-muted: rgba(42, 54, 48, 0.5);
+    --tf-select-bg: #ffffff;
+    --tf-select-border: var(--cl-border);
+    --tf-select-fg: var(--cl-text);
+    --tf-select-chevron: rgba(42, 54, 48, 0.55);
   }
 }
 
@@ -67,9 +275,19 @@
   }
 
   body {
-    @apply bg-cream text-brand-black font-sans antialiased;
+    @apply text-brand-black antialiased;
+    background: var(--shell-bg);
     font-size: 16px;
     line-height: 1.55;
+  }
+
+  html[data-library='sidekick'] body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  html[data-library='claude'] body {
+    font-family: 'Darker Grotesque', system-ui, sans-serif;
+    line-height: 1.62;
   }
 
   button,
@@ -131,11 +349,21 @@
   }
 
   .surface-card {
-    @apply bg-white border border-brand-border rounded-xl shadow-card-soft;
+    @apply rounded-xl shadow-card-soft;
+    background: var(--library-surface);
+    border: 1px solid var(--card-border);
   }
 
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+  }
+
+  .shadow-floating-glass {
+    box-shadow: var(--shadow-floating-glass);
+  }
+
+  .shadow-glass-pill {
+    box-shadow: var(--shadow-glass-pill);
   }
 
   .font-serif {
@@ -144,6 +372,10 @@
 
   .font-sans {
     font-family: 'Darker Grotesque', system-ui, sans-serif;
+  }
+
+  .font-sidekick {
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   /* Category pills */
@@ -165,6 +397,42 @@
   }
 }
 
+/* ── Convert footer (isolated from library shell) ─────────────────────────── */
+.convert-footer[data-style-system='convert'] {
+  background: var(--cv-cream);
+  border-top: 1px solid var(--cv-border);
+}
+
+.convert-footer[data-style-system='convert'] .convert-footer__title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 500;
+  color: var(--cv-dg);
+}
+
+.convert-footer[data-style-system='convert'] .convert-footer__body {
+  font-family: 'Darker Grotesque', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--cv-muted);
+}
+
+.convert-footer[data-style-system='convert'] .convert-footer__link {
+  font-family: 'Darker Grotesque', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--cv-dg);
+  border: 1px solid var(--cv-border);
+  background: var(--cv-elevated);
+}
+
+.convert-footer[data-style-system='convert'] .convert-footer__link:hover {
+  background: rgba(201, 222, 182, 0.35);
+}
+
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
 .scrollbar-none {
   scrollbar-width: none;
@@ -180,6 +448,11 @@
   line-height: 1.72;
   color: var(--brand-text);
   white-space: pre-wrap;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+}
+
+html[data-library='claude'] .prompt-body {
   font-family: 'Darker Grotesque', system-ui, sans-serif;
   font-weight: 600;
 }

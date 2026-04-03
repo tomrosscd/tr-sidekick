@@ -64,8 +64,8 @@ export function PromptSubmitForm() {
 
     const submission = {
       submitted_by: user?.id ?? null,
-      submitter_name: form.submitter_name || user?.email?.split('@')[0] ?? 'Anonymous',
-      submitter_email: form.submitter_email || user?.email ?? '',
+      submitter_name: form.submitter_name || (user?.email?.split('@')[0] ?? 'Anonymous'),
+      submitter_email: form.submitter_email || (user?.email ?? ''),
       title: form.title,
       short_description: form.short_description,
       prompt_body: form.prompt_body,

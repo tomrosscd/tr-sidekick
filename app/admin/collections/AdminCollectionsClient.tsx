@@ -14,7 +14,7 @@ import { Plus, Trash2, ExternalLink, Star } from 'lucide-react'
 import Link from 'next/link'
 import type { PromptCollection, Visibility } from '@/types'
 
-interface CollectionRow extends PromptCollection {
+interface CollectionRow extends Omit<PromptCollection, 'items'> {
   items?: { count: number }[]
 }
 

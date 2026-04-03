@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
+import type { Prompt } from '@/types'
 import { PromptDetailClient } from './PromptDetailClient'
+
+type FollowUpPrompt = Pick<Prompt, 'id' | 'slug' | 'title' | 'short_description' | 'category'>
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -37,13 +40,13 @@ export default async function PromptDetailPage({ params }: Props) {
   if (!prompt) notFound()
 
   // Fetch follow-up prompts if any
-  let followUpPrompts = []
+  let followUpPrompts: FollowUpPrompt[] = []
   if (prompt.follow_up_prompt_ids?.length > 0) {
     const { data } = await supabase
       .from('prompts')
       .select('id, slug, title, short_description, category')
       .in('id', prompt.follow_up_prompt_ids)
-    followUpPrompts = data ?? []
+    followUpPrompts = (data as FollowUpPrompt[] | null) ?? []
   }
 
   return <PromptDetailClient prompt={prompt} followUpPrompts={followUpPrompts} />

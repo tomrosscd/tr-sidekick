@@ -63,6 +63,7 @@ const config: Config = {
       fontFamily: {
         serif: ['Instrument Serif', 'Georgia', 'serif'],
         sans: ['Darker Grotesque', 'system-ui', 'sans-serif'],
+        sidekick: ['Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         display: ['3rem', { lineHeight: '1.05', fontWeight: '400' }],

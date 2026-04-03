@@ -17,31 +17,32 @@ export function SkillCard({ skill }: SkillCardProps) {
         'hover:border-fg hover:shadow-card-hover'
       )}
     >
-      <div className="px-5 py-4 border-b border-brand-border">
+      <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--card-border)' }}>
         <div className="flex items-center gap-1.5 mb-3 flex-wrap">
-          <span className="meta-pill bg-[#edf0f7] text-[#2d3d6b]">{skill.category}</span>
+          <span className="meta-pill" style={{ background: 'var(--library-chip-bg)', color: 'var(--library-chip-fg)' }}>{skill.category}</span>
           {skill.is_featured && <Badge variant="featured">Featured</Badge>}
           {skill.is_recommended && <Badge variant="recommended">Recommended</Badge>}
         </div>
         <Link href={`/skills/${skill.slug}`} className="block group">
-          <h3 className="font-serif text-h3 text-brand-black leading-[1.18] mb-1.5 group-hover:text-fg transition-colors">
+          <h3 className="font-serif text-h3 text-[var(--shell-fg)] leading-[1.22] mb-1.5 group-hover:text-[var(--library-accent)] transition-colors">
             {skill.title}
           </h3>
         </Link>
         {skill.short_description && (
-          <p className="text-body-sm text-brand-gray font-[600] leading-[1.45]">
+          <p className="text-body-sm text-[var(--shell-muted-fg)] font-[500] leading-[1.5]">
             {skill.short_description}
           </p>
         )}
       </div>
 
-      <div className="px-5 py-4 bg-cream/28 border-b border-brand-border">
+      <div className="px-5 py-4 border-b" style={{ background: 'var(--library-surface-muted)', borderColor: 'var(--card-border)' }}>
         <div className="type-label mb-2">Use cases</div>
         <div className="flex flex-wrap gap-1.5">
           {skill.use_cases.slice(0, 4).map(useCase => (
             <span
               key={useCase}
-              className="text-caption font-[700] px-2.5 py-1 rounded-full border border-brand-border bg-white text-brand-gray"
+              className="text-caption font-[600] px-2.5 py-1.5 rounded-full border bg-[var(--library-surface)] text-[var(--shell-muted-fg)]"
+              style={{ borderColor: 'var(--card-border)' }}
             >
               {useCase}
             </span>
@@ -49,13 +50,13 @@ export function SkillCard({ skill }: SkillCardProps) {
         </div>
       </div>
 
-      <div className="px-5 py-3 flex items-center justify-between">
-        <span className="text-caption text-brand-gray font-[700]">
+      <div className="px-5 py-3 flex items-center justify-between border-t" style={{ borderColor: 'var(--card-border)' }}>
+        <span className="text-caption text-[var(--shell-muted-fg)] font-[600]">
           {skill.owner_name ?? 'Unassigned owner'}
         </span>
         <Link
           href={`/skills/${skill.slug}`}
-          className="text-caption font-[700] text-fg hover:underline"
+          className="text-caption font-[600] text-[var(--library-accent)] hover:underline"
         >
           Details
         </Link>

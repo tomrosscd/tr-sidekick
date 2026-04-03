@@ -34,53 +34,71 @@ export function SkillDetailClient({
 
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4 flex-wrap">
-            <span className="meta-pill bg-[#edf0f7] text-[#2d3d6b]">{skill.category}</span>
+            <span
+              className="meta-pill"
+              style={{ background: 'var(--library-chip-bg)', color: 'var(--library-chip-fg)' }}
+            >
+              {skill.category}
+            </span>
             {currentVersion && (
-              <span className="meta-pill bg-lg/30 text-dg">
+              <span
+                className="meta-pill"
+                style={{ background: 'var(--library-surface-muted)', color: 'var(--shell-fg)' }}
+              >
                 v{currentVersion.version_number}{currentVersion.version_label ? ` · ${currentVersion.version_label}` : ''}
               </span>
             )}
           </div>
 
-          <h1 className="font-serif text-h1 leading-[1.08] text-brand-black mb-3">
+          <h1 className="font-serif text-h1 leading-[1.08] text-[var(--shell-fg)] mb-3">
             {skill.title}
           </h1>
           {skill.short_description && (
-            <p className="text-body text-brand-gray font-[600] leading-relaxed max-w-3xl">
+            <p className="text-body text-[var(--shell-muted-fg)] font-[500] leading-relaxed max-w-3xl">
               {skill.short_description}
             </p>
           )}
         </div>
 
-        <div className="mb-8 bg-white border border-brand-border rounded-xl p-6 shadow-card-soft">
-          <h2 className="type-label mb-3">Current version notes</h2>
+        <div
+          className="mb-8 rounded-xl p-6 shadow-card-soft border"
+          style={{
+            background: 'var(--library-surface)',
+            borderColor: 'var(--card-border)',
+          }}
+        >
+          <h2 className="type-label mb-3" style={{ color: 'var(--shell-muted-fg)' }}>
+            Current version notes
+          </h2>
           {currentVersion?.changelog ? (
-            <p className="text-body-sm text-brand-text font-[600] whitespace-pre-wrap">
+            <p className="text-body-sm text-brand-text font-[500] whitespace-pre-wrap">
               {currentVersion.changelog}
             </p>
           ) : (
-            <p className="text-body-sm text-brand-gray font-[600]">No changelog provided for this version.</p>
+            <p className="text-body-sm text-[var(--shell-muted-fg)] font-[500]">No changelog provided for this version.</p>
           )}
         </div>
 
         <div className="mb-10">
-          <h2 className="type-label mb-3">Version history</h2>
+          <h2 className="type-label mb-3" style={{ color: 'var(--shell-muted-fg)' }}>
+            Version history
+          </h2>
           <div className="space-y-3">
             {versions.map(version => (
               <div key={version.id} className="surface-card p-4">
                 <div className="flex items-center justify-between gap-3 mb-2">
-                  <div className="font-serif text-h3 text-brand-black">
+                  <div className="font-serif text-h3 text-[var(--shell-fg)]">
                     v{version.version_number}
                     {version.version_label ? ` · ${version.version_label}` : ''}
                   </div>
-                  <div className="text-caption text-brand-gray font-[600] flex items-center gap-3">
+                  <div className="text-caption text-[var(--shell-muted-fg)] font-[500] flex items-center gap-3">
                     <span className="inline-flex items-center gap-1"><User size={12} /> {skill.owner_name ?? 'Unknown owner'}</span>
                     <span className="inline-flex items-center gap-1"><Calendar size={12} /> {formatDate(version.created_at)}</span>
                   </div>
                 </div>
 
                 {version.changelog && (
-                  <p className="text-body-sm text-brand-text font-[600] whitespace-pre-wrap mb-3">
+                  <p className="text-body-sm text-brand-text font-[500] whitespace-pre-wrap mb-3">
                     {version.changelog}
                   </p>
                 )}
@@ -91,7 +109,12 @@ export function SkillDetailClient({
                       <a
                         key={file.id}
                         href={signedFileUrls[file.id]}
-                        className="inline-flex items-center gap-1.5 text-caption font-[700] px-3 py-1.5 rounded-md border border-brand-border bg-white hover:border-fg text-brand-gray hover:text-dg"
+                        className="inline-flex items-center gap-1.5 text-caption font-[600] px-3 py-1.5 rounded-md border transition-colors hover:border-[var(--library-accent)] hover:text-[var(--shell-fg)]"
+                        style={{
+                          borderColor: 'var(--card-border)',
+                          background: 'var(--library-surface)',
+                          color: 'var(--shell-muted-fg)',
+                        }}
                         target="_blank"
                         rel="noreferrer"
                       >

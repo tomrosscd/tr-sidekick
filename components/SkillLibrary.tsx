@@ -39,7 +39,10 @@ export function SkillLibrary() {
     <>
       <Header showTimeframe={false} />
       <SkillFilterBar categoryCounts={counts} ownerOptions={owners} />
-      <main className="max-w-[1500px] mx-auto px-5 py-6 pb-16">
+      <main
+        className="max-w-[1500px] mx-auto px-5 py-6 pb-16 min-h-[60vh]"
+        style={{ background: 'var(--shell-bg)' }}
+      >
         <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
           <span className="text-body-sm text-brand-gray font-[700]">
             Showing <strong className="text-dg">{loading ? '…' : filtered.length}</strong> skill{filtered.length === 1 ? '' : 's'}

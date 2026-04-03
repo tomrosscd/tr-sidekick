@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
+import { LibraryThemeSync } from '@/components/LibraryThemeSync'
+import { ShellFooter } from '@/components/ShellFooter'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -17,7 +19,7 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-library="sidekick" suppressHydrationWarning>
       <head>
         {gaId && (
           <>
@@ -39,7 +41,9 @@ export default function RootLayout({
         )}
       </head>
       <body>
+        <LibraryThemeSync />
         {children}
+        <ShellFooter />
         <Toaster
           position="bottom-right"
           toastOptions={{

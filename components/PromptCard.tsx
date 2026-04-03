@@ -29,7 +29,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
       'hover:border-fg hover:shadow-card-hover'
     )}>
       {/* Card header */}
-      <div className="px-5 py-4 border-b border-brand-border">
+      <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--card-border)' }}>
         <div className="flex items-center justify-between mb-3 gap-1.5">
           {/* Category pill */}
           {catConfig && catConfig.value !== 'All' && (
@@ -59,7 +59,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
           href={`/prompts/${prompt.slug}`}
           className="block group"
         >
-          <h3 className="font-serif text-h3 text-brand-black leading-[1.18] mb-1.5 group-hover:text-fg transition-colors">
+          <h3 className="font-sidekick text-h3 font-semibold text-[var(--filter-tab-active-fg)] leading-[1.18] mb-1.5 group-hover:text-fg transition-colors">
             {prompt.title}
           </h3>
         </Link>
@@ -69,7 +69,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
       </div>
 
       {/* Prompt body preview */}
-      <div className="flex-1 px-5 py-4 relative bg-cream/28">
+      <div className="flex-1 px-5 py-4 relative" style={{ background: 'var(--library-surface-muted)' }}>
         <div className="text-label text-brand-gray mb-2">Prompt preview</div>
         <div className="relative">
           <div className={cn(
@@ -79,13 +79,13 @@ export function PromptCard({ prompt }: PromptCardProps) {
             {builtPrompt}
           </div>
           {!expanded && (
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[var(--library-surface)] to-transparent pointer-events-none" />
           )}
         </div>
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-3 border-t border-brand-border flex items-center justify-between gap-2">
+      <div className="px-5 py-3 border-t flex items-center justify-between gap-2" style={{ borderColor: 'var(--card-border)' }}>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setExpanded(e => !e)}
