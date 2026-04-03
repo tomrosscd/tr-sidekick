@@ -18,10 +18,10 @@ export default async function SubmitPage() {
       <Header showTimeframe={false} />
       <main className="max-w-2xl mx-auto px-5 py-8 pb-16">
         <div className="mb-8">
-          <h1 className="font-serif text-[28px] text-brand-black mb-2">
+          <h1 className="section-title mb-2">
             Submit a prompt
           </h1>
-          <p className="text-[14px] text-brand-gray font-[500]">
+          <p className="section-subtitle">
             Contribute a new prompt to the library. Submissions are reviewed before publishing.
           </p>
         </div>

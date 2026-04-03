@@ -80,7 +80,7 @@ export function AdminPromptsClient({ prompts: initialPrompts }: Props) {
           placeholder="Search prompts…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 h-10 border border-brand-border rounded-lg px-3.5 text-body-sm font-[600] bg-white focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20"
+          className="flex-1 h-10 border border-brand-border rounded-lg px-3.5 text-body-sm font-[700] bg-white focus:outline-none focus:border-fg focus:ring-2 focus:ring-fg/20"
         />
         <div className="w-40">
           <Select value={catFilter} onValueChange={setCatFilter}>

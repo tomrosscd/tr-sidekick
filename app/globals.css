@@ -118,6 +118,18 @@
     @apply text-label uppercase text-brand-gray;
   }
 
+  .meta-pill {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-label font-[800] uppercase tracking-[0.08em];
+  }
+
+  .section-title {
+    @apply font-serif text-h2 text-brand-black;
+  }
+
+  .section-subtitle {
+    @apply text-body-sm text-brand-gray font-[600];
+  }
+
   .surface-card {
     @apply bg-white border border-brand-border rounded-xl shadow-card-soft;
   }

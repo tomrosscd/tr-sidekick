@@ -3,6 +3,7 @@
 import { Header } from '@/components/Header'
 import { TimeframeProvider } from '@/components/TimeframeContext'
 import { PromptCard } from '@/components/PromptCard'
+import { SkillCard } from '@/components/SkillCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -15,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Prompt } from '@/types'
+import type { Prompt, Skill } from '@/types'
 
 const samplePrompt: Prompt = {
   id: 'sample-1',
@@ -44,6 +45,25 @@ const samplePrompt: Prompt = {
   version: 1,
   last_reviewed_at: null,
   published_at: null,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+}
+
+const sampleSkill: Skill = {
+  id: 'skill-1',
+  slug: 'analytics-audit-skill',
+  title: 'Analytics audit skill',
+  short_description: 'A reusable Claude Skill for rapid analytics sanity checks and audit summaries.',
+  category: 'Analytics',
+  use_cases: ['monthly-reporting', 'qa-validation'],
+  owner_name: 'Data Team',
+  visibility: 'internal',
+  status: 'published',
+  is_featured: true,
+  is_recommended: false,
+  created_by: null,
+  updated_by: null,
+  current_version_id: null,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 }
@@ -140,8 +160,8 @@ export default function DesignSystemPage() {
             <Badge variant="recommended">Recommended</Badge>
             <Badge variant="needsFilling">Edit placeholders</Badge>
             <Badge variant="outline">Internal</Badge>
-            <span className="pill-CRO text-label px-2.5 py-1 rounded-full">CRO</span>
-            <span className="pill-Strategy text-label px-2.5 py-1 rounded-full">Strategy</span>
+            <span className="meta-pill pill-CRO">CRO</span>
+            <span className="meta-pill pill-Strategy">Strategy</span>
           </div>
         </Section>
 
@@ -184,6 +204,23 @@ export default function DesignSystemPage() {
                 source_label: 'Shopify',
                 title: 'Weekly revenue decomposition',
                 category: 'LTV',
+              }}
+            />
+          </div>
+        </Section>
+
+        <Section title="Skill card states">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <SkillCard skill={sampleSkill} />
+            <SkillCard
+              skill={{
+                ...sampleSkill,
+                id: 'skill-2',
+                slug: 'cro-checklist-skill',
+                title: 'CRO checklist skill',
+                category: 'Conversion',
+                is_featured: false,
+                is_recommended: true,
               }}
             />
           </div>

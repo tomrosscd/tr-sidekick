@@ -63,7 +63,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           {catConfig && catConfig.value !== 'All' && (
             <span className={cn(
-              'text-label font-[800] tracking-[0.08em] uppercase px-2.5 py-1 rounded-full',
+              'meta-pill',
               catConfig.pillClass
             )}>
               {prompt.category}
@@ -100,7 +100,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       {/* When to use */}
       {prompt.when_to_use && (
         <div className="mb-8 bg-lg/10 border border-lg/30 rounded-xl p-5">
-          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-dg/80 mb-2">
+          <h2 className="type-label text-dg/80 mb-2">
             When this prompt is useful
           </h2>
           <p className="text-body-sm text-brand-text font-[600] leading-relaxed">
@@ -132,7 +132,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       {/* Prompt body */}
       <div className="mb-7">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray">
+          <h2 className="type-label">
             Prompt
           </h2>
           <button
@@ -158,7 +158,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       {/* Caveats */}
       {prompt.caveats && (
         <div className="mb-8 border border-brand-border rounded-xl p-5 bg-white">
-          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-2">
+          <h2 className="type-label mb-2">
             Caveats &amp; notes
           </h2>
           <p className="text-body-sm text-brand-text font-[600] leading-relaxed whitespace-pre-wrap">
@@ -170,7 +170,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
       {/* Follow-up prompts */}
       {followUpPrompts.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-3">
+          <h2 className="type-label mb-3">
             Follow-up prompts
           </h2>
           <div className="space-y-2">
@@ -184,7 +184,7 @@ function PromptDetailInner({ prompt, followUpPrompts }: PromptDetailClientProps)
                 >
                   <div className="flex items-center gap-2 mb-1">
                     {cat && cat.value !== 'All' && (
-                      <span className={cn('text-[9px] font-[800] tracking-[0.08em] uppercase px-1.5 py-[2px] rounded-full', cat.pillClass)}>
+                      <span className={cn('meta-pill', cat.pillClass)}>
                         {p.category}
                       </span>
                     )}

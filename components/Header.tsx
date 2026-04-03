@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { AuthButton } from './AuthButton'
+import { LibrarySwitcher } from './LibrarySwitcher'
 import { TimeframeSelector } from './TimeframeSelector'
 import Link from 'next/link'
 
@@ -47,7 +48,8 @@ export function Header({ showTimeframe = true }: HeaderProps) {
             <span className="font-serif text-h3 text-white">Convert</span>
           )}
         </div>
-        <div className="justify-self-end flex items-center">
+        <div className="justify-self-end flex items-center gap-2">
+          <LibrarySwitcher />
           <AuthButton />
         </div>
       </div>

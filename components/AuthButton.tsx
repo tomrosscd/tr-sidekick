@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LogIn, LogOut, User, ChevronDown } from 'lucide-react'
+import { LogIn, LogOut, ChevronDown } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { isAdminUser, isInternalUser } from '@/lib/utils'
@@ -83,9 +83,9 @@ export function AuthButton() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="normal-case text-[12px] font-[600] text-brand-black tracking-normal opacity-100">
+        <DropdownMenuLabel className="normal-case text-caption font-[700] text-brand-black tracking-normal opacity-100">
           <div className="font-[700] text-brand-black truncate">{user.email}</div>
-          <div className="text-[11px] text-brand-gray font-[500] mt-0.5">
+          <div className="text-label text-brand-gray font-[700] mt-0.5">
             {isAdmin ? 'Admin' : isInternal ? 'Internal' : 'External'}
           </div>
         </DropdownMenuLabel>
@@ -94,6 +94,13 @@ export function AuthButton() {
           <DropdownMenuItem asChild>
             <Link href="/submit" className="cursor-pointer">
               Submit a prompt
+            </Link>
+          </DropdownMenuItem>
+        )}
+        {isInternal && (
+          <DropdownMenuItem asChild>
+            <Link href="/skills/submit" className="cursor-pointer">
+              Submit a skill
             </Link>
           </DropdownMenuItem>
         )}

@@ -47,6 +47,13 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Skills routes: internal users only
+  if (pathname.startsWith('/skills') || pathname.startsWith('/api/skills')) {
+    if (!user || !isInternalUser(user.email)) {
+      return NextResponse.redirect(new URL('/login?reason=internal-only', request.url))
+    }
+  }
+
   // Auth callback — allow through
   if (pathname.startsWith('/auth/callback')) {
     return supabaseResponse

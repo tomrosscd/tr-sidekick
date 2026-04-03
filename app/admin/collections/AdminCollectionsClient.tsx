@@ -173,7 +173,7 @@ export function AdminCollectionsClient({ collections: initialCollections, allPro
               )}
               <div className="flex items-center gap-3 mt-1.5">
                 <span className={cn(
-                  'text-label font-[800] uppercase tracking-[0.08em] px-2 py-1 rounded-full',
+                  'meta-pill px-2 py-1',
                   collection.visibility === 'public' ? 'bg-[#e6f4ed] text-[#1a5c35]' :
                   collection.visibility === 'internal' ? 'bg-[#edf0f7] text-[#2d3d6b]' :
                   'bg-[#f0f0f0] text-[#444]'

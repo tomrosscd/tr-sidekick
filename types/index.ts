@@ -4,6 +4,10 @@ export type Visibility = 'public' | 'internal' | 'draft'
 export type PromptStatus = 'published' | 'archived' | 'draft'
 export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced'
 export type SubmissionStatus = 'pending' | 'approved' | 'rejected'
+export type SkillVisibility = 'internal' | 'draft'
+export type SkillStatus = 'published' | 'archived' | 'draft'
+export type SkillSubmissionStatus = 'pending' | 'approved' | 'rejected'
+export type SkillSubmissionType = 'new' | 'update'
 export type EventType =
   | 'prompt_view'
   | 'prompt_copy'
@@ -100,6 +104,74 @@ export interface PromptEvent {
   session_id: string | null
   metadata: Record<string, unknown>
   created_at: string
+}
+
+// ─── Skills ───────────────────────────────────────────────────────────────────
+
+export interface Skill {
+  id: string
+  slug: string
+  title: string
+  short_description: string | null
+  category: string
+  use_cases: string[]
+  owner_name: string | null
+  visibility: SkillVisibility
+  status: SkillStatus
+  is_featured: boolean
+  is_recommended: boolean
+  created_by: string | null
+  updated_by: string | null
+  current_version_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface SkillVersion {
+  id: string
+  skill_id: string
+  version_number: number
+  version_label: string | null
+  changelog: string | null
+  content_markdown: string | null
+  status: SkillStatus
+  created_by: string | null
+  created_at: string
+}
+
+export interface SkillSubmission {
+  id: string
+  submission_type: SkillSubmissionType
+  skill_id: string | null
+  submitted_by: string | null
+  submitter_name: string
+  submitter_email: string
+  title: string
+  short_description: string | null
+  category: string
+  use_cases: string[]
+  owner_name: string | null
+  version_number: number | null
+  version_label: string | null
+  changelog: string | null
+  content_markdown: string | null
+  status: SkillSubmissionStatus
+  reviewer_notes: string | null
+  created_at: string
+  reviewed_at: string | null
+}
+
+export interface SkillFile {
+  id: string
+  skill_id: string | null
+  skill_version_id: string | null
+  submission_id: string | null
+  file_name: string
+  storage_path: string
+  mime_type: string | null
+  file_size_bytes: number | null
+  uploaded_by: string | null
+  uploaded_at: string
 }
 
 // ─── Filter State ─────────────────────────────────────────────────────────────
@@ -200,3 +272,34 @@ export const COMPARISON_OPTIONS = [
   { label: 'Same period last year', value: 'yoy' },
   { label: 'No comparison', value: 'none' },
 ]
+
+export const SKILL_CATEGORIES = [
+  'Prompting',
+  'Data',
+  'Conversion',
+  'Analytics',
+  'Automation',
+  'Operations',
+  'Documentation',
+  'Research',
+] as const
+
+export const SKILL_USE_CASE_OPTIONS = [
+  'new-client-onboarding',
+  'weekly-analysis',
+  'monthly-reporting',
+  'cro-audit',
+  'qa-validation',
+  'strategy-planning',
+  'internal-enablement',
+] as const
+
+export const SKILL_USE_CASE_LABELS: Record<string, string> = {
+  'new-client-onboarding': 'New client onboarding',
+  'weekly-analysis': 'Weekly analysis',
+  'monthly-reporting': 'Monthly reporting',
+  'cro-audit': 'CRO audit',
+  'qa-validation': 'QA / validation',
+  'strategy-planning': 'Strategy planning',
+  'internal-enablement': 'Internal enablement',
+}

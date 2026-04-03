@@ -140,7 +140,7 @@ export function SubmissionsClient({ submissions }: Props) {
                 </div>
               </div>
               <span className={cn(
-                'text-label font-[800] uppercase tracking-[0.08em] px-2.5 py-1 rounded-full flex-shrink-0',
+                'meta-pill px-2.5 py-1 flex-shrink-0',
                 submission.status === 'pending' && 'bg-[#fff0e6] text-[#a84a00]',
                 submission.status === 'approved' && 'bg-[#e6f4ed] text-[#1a5c35]',
                 submission.status === 'rejected' && 'bg-[#f0f0f0] text-[#444]',
@@ -158,7 +158,7 @@ export function SubmissionsClient({ submissions }: Props) {
               <div className="border-t border-brand-border px-5 py-5 space-y-4">
                 {submission.short_description && (
                   <div>
-                    <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
+                    <div className="type-label mb-1">
                       Description
                     </div>
                     <p className="text-body-sm text-brand-text font-[600]">
@@ -168,14 +168,14 @@ export function SubmissionsClient({ submissions }: Props) {
                 )}
 
                 <div>
-                  <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
+                  <div className="type-label mb-1">
                     Category
                   </div>
                   <span className="text-caption font-[700] text-brand-black">{submission.category}</span>
                 </div>
 
                 <div>
-                  <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1.5">
+                  <div className="type-label mb-1.5">
                     Prompt body
                   </div>
                   <pre className="bg-cream border border-brand-border rounded-lg p-4 text-body-sm text-brand-text whitespace-pre-wrap font-sans font-[600] leading-relaxed max-h-64 overflow-y-auto">
@@ -185,7 +185,7 @@ export function SubmissionsClient({ submissions }: Props) {
 
                 {submission.notes && (
                   <div>
-                    <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
+                    <div className="type-label mb-1">
                       Notes from submitter
                     </div>
                     <p className="text-body-sm text-brand-text font-[600]">{submission.notes}</p>
@@ -207,7 +207,7 @@ export function SubmissionsClient({ submissions }: Props) {
 
                 {submission.reviewer_notes && submission.status !== 'pending' && (
                   <div>
-                    <div className="text-label font-[800] uppercase tracking-[0.08em] text-brand-gray mb-1">
+                    <div className="type-label mb-1">
                       Reviewer notes
                     </div>
                     <p className="text-body-sm text-brand-text font-[600]">{submission.reviewer_notes}</p>

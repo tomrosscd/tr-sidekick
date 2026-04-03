@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { PromptCard, PromptCardSkeleton } from './PromptCard'
@@ -9,8 +9,6 @@ import { Header } from './Header'
 import { TimeframeProvider } from './TimeframeContext'
 import { CATEGORIES } from '@/types'
 import type { Prompt } from '@/types'
-import { BookOpen } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface PromptLibraryProps {
   isAdmin?: boolean
@@ -149,8 +147,6 @@ function EmptyState({ query }: { query: string }) {
 
 // Tracks the header height for sticky filter bar positioning
 function HdrHeightTracker() {
-  const ref = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     const hdr = document.getElementById('hdr')
     if (!hdr) return

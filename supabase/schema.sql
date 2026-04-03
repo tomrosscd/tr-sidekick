@@ -286,3 +286,230 @@ CREATE POLICY "Admin can read events"
   ON prompt_events FOR SELECT
   TO authenticated
   USING (is_admin_user());
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Claude Skills Library (internal-only)
+-- ═══════════════════════════════════════════════════════════════════
+
+-- ── Enums ──────────────────────────────────────────────────────────
+
+CREATE TYPE skill_visibility AS ENUM ('internal', 'draft');
+CREATE TYPE skill_status AS ENUM ('published', 'archived', 'draft');
+CREATE TYPE skill_submission_status AS ENUM ('pending', 'approved', 'rejected');
+CREATE TYPE skill_submission_type AS ENUM ('new', 'update');
+
+-- ── Skills ─────────────────────────────────────────────────────────
+
+CREATE TABLE skills (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug                TEXT NOT NULL UNIQUE,
+  title               TEXT NOT NULL,
+  short_description   TEXT,
+  category            TEXT NOT NULL,
+  use_cases           TEXT[] NOT NULL DEFAULT '{}',
+  owner_name          TEXT,
+  visibility          skill_visibility NOT NULL DEFAULT 'internal',
+  status              skill_status NOT NULL DEFAULT 'draft',
+  is_featured         BOOLEAN NOT NULL DEFAULT FALSE,
+  is_recommended      BOOLEAN NOT NULL DEFAULT FALSE,
+  created_by          UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  updated_by          UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  current_version_id  UUID,
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TRIGGER skills_updated_at
+  BEFORE UPDATE ON skills
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- ── Skill Versions ─────────────────────────────────────────────────
+
+CREATE TABLE skill_versions (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  skill_id        UUID NOT NULL REFERENCES skills(id) ON DELETE CASCADE,
+  version_number  INTEGER NOT NULL,
+  version_label   TEXT,
+  changelog       TEXT,
+  content_markdown TEXT,
+  status          skill_status NOT NULL DEFAULT 'draft',
+  created_by      UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (skill_id, version_number)
+);
+
+CREATE INDEX idx_skill_versions_skill ON skill_versions(skill_id);
+CREATE INDEX idx_skill_versions_created ON skill_versions(created_at DESC);
+
+ALTER TABLE skills
+  ADD CONSTRAINT skills_current_version_fk
+  FOREIGN KEY (current_version_id)
+  REFERENCES skill_versions(id)
+  ON DELETE SET NULL;
+
+-- ── Skill Submissions ──────────────────────────────────────────────
+
+CREATE TABLE skill_submissions (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  submission_type   skill_submission_type NOT NULL DEFAULT 'new',
+  skill_id          UUID REFERENCES skills(id) ON DELETE SET NULL,
+  submitted_by      UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  submitter_name    TEXT NOT NULL,
+  submitter_email   TEXT NOT NULL,
+  title             TEXT NOT NULL,
+  short_description TEXT,
+  category          TEXT NOT NULL,
+  use_cases         TEXT[] NOT NULL DEFAULT '{}',
+  owner_name        TEXT,
+  version_number    INTEGER,
+  version_label     TEXT,
+  changelog         TEXT,
+  content_markdown  TEXT,
+  status            skill_submission_status NOT NULL DEFAULT 'pending',
+  reviewer_notes    TEXT,
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  reviewed_at       TIMESTAMPTZ
+);
+
+CREATE INDEX idx_skill_submissions_status ON skill_submissions(status);
+CREATE INDEX idx_skill_submissions_skill ON skill_submissions(skill_id);
+
+-- ── Skill Files ────────────────────────────────────────────────────
+
+CREATE TABLE skill_files (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  skill_id         UUID REFERENCES skills(id) ON DELETE CASCADE,
+  skill_version_id UUID REFERENCES skill_versions(id) ON DELETE CASCADE,
+  submission_id    UUID REFERENCES skill_submissions(id) ON DELETE CASCADE,
+  file_name        TEXT NOT NULL,
+  storage_path     TEXT NOT NULL,
+  mime_type        TEXT,
+  file_size_bytes  BIGINT,
+  uploaded_by      UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  uploaded_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_skill_files_skill ON skill_files(skill_id);
+CREATE INDEX idx_skill_files_version ON skill_files(skill_version_id);
+CREATE INDEX idx_skill_files_submission ON skill_files(submission_id);
+
+-- ── Skills RLS ─────────────────────────────────────────────────────
+
+ALTER TABLE skills ENABLE ROW LEVEL SECURITY;
+ALTER TABLE skill_versions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE skill_submissions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE skill_files ENABLE ROW LEVEL SECURITY;
+
+-- Internal users can read published internal skills
+CREATE POLICY "Internal users can read skills"
+  ON skills FOR SELECT
+  TO authenticated
+  USING (
+    is_internal_user()
+    AND visibility = 'internal'
+    AND status = 'published'
+  );
+
+CREATE POLICY "Admin can read all skills"
+  ON skills FOR SELECT
+  TO authenticated
+  USING (is_admin_user());
+
+CREATE POLICY "Admin can write skills"
+  ON skills FOR ALL
+  TO authenticated
+  USING (is_admin_user())
+  WITH CHECK (is_admin_user());
+
+CREATE POLICY "Internal users can read published skill versions"
+  ON skill_versions FOR SELECT
+  TO authenticated
+  USING (
+    is_internal_user()
+    AND EXISTS (
+      SELECT 1
+      FROM skills s
+      WHERE s.id = skill_id
+        AND s.visibility = 'internal'
+        AND s.status = 'published'
+    )
+  );
+
+CREATE POLICY "Admin can read all skill versions"
+  ON skill_versions FOR SELECT
+  TO authenticated
+  USING (is_admin_user());
+
+CREATE POLICY "Admin can write skill versions"
+  ON skill_versions FOR ALL
+  TO authenticated
+  USING (is_admin_user())
+  WITH CHECK (is_admin_user());
+
+CREATE POLICY "Internal users can submit skills"
+  ON skill_submissions FOR INSERT
+  TO authenticated
+  WITH CHECK (is_internal_user());
+
+CREATE POLICY "Admin can read all skill submissions"
+  ON skill_submissions FOR SELECT
+  TO authenticated
+  USING (is_admin_user());
+
+CREATE POLICY "Admin can update skill submissions"
+  ON skill_submissions FOR UPDATE
+  TO authenticated
+  USING (is_admin_user())
+  WITH CHECK (is_admin_user());
+
+CREATE POLICY "Internal users can read skill files"
+  ON skill_files FOR SELECT
+  TO authenticated
+  USING (is_internal_user());
+
+CREATE POLICY "Admin can write skill files"
+  ON skill_files FOR ALL
+  TO authenticated
+  USING (is_admin_user())
+  WITH CHECK (is_admin_user());
+
+-- ── Storage bucket and policies (skills files) ─────────────────────
+
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('skills-files', 'skills-files', FALSE);
+
+CREATE POLICY "Internal users can read skills files"
+  ON storage.objects FOR SELECT
+  TO authenticated
+  USING (
+    bucket_id = 'skills-files'
+    AND is_internal_user()
+  );
+
+CREATE POLICY "Internal users can upload skills files"
+  ON storage.objects FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    bucket_id = 'skills-files'
+    AND is_internal_user()
+  );
+
+CREATE POLICY "Internal users can update skills files"
+  ON storage.objects FOR UPDATE
+  TO authenticated
+  USING (
+    bucket_id = 'skills-files'
+    AND is_internal_user()
+  )
+  WITH CHECK (
+    bucket_id = 'skills-files'
+    AND is_internal_user()
+  );
+
+CREATE POLICY "Admin can delete skills files"
+  ON storage.objects FOR DELETE
+  TO authenticated
+  USING (
+    bucket_id = 'skills-files'
+    AND is_admin_user()
+  );

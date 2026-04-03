@@ -38,10 +38,10 @@ function LoginContent() {
       {/* Header */}
       <div className="bg-dg border-b border-white/[0.06]">
         <div className="flex items-center justify-between px-5 py-3">
-          <span className="font-[900] text-[10px] tracking-[0.2em] uppercase text-lg">
+          <span className="text-label font-[900] tracking-[0.2em] uppercase text-lg">
             Convert Digital
           </span>
-          <h1 className="font-serif text-[17px] text-white text-center flex-1">
+          <h1 className="font-serif text-h3 text-white text-center flex-1">
             Sidekick Prompt Library
           </h1>
           <span className="w-[120px]" />
@@ -53,16 +53,16 @@ function LoginContent() {
         <div className="w-full max-w-sm">
           <div className="bg-white border border-brand-border rounded-2xl p-8 shadow-sm">
             <div className="text-center mb-8">
-              <h2 className="font-serif text-[26px] text-brand-black mb-2">
+              <h2 className="font-serif text-h2 text-brand-black mb-2">
                 Sign in
               </h2>
-              <p className="text-[13.5px] text-brand-gray font-[500]">
+              <p className="text-body-sm text-brand-gray font-[600]">
                 Use your Convert Digital Google account to access the library.
               </p>
             </div>
 
             {reason && messages[reason] && (
-              <div className="mb-5 bg-[#fff0e6] border border-[rgba(255,163,102,0.4)] rounded-lg px-4 py-3 text-[12.5px] text-[#a84a00] font-[600]">
+              <div className="mb-5 bg-[#fff0e6] border border-[rgba(255,163,102,0.4)] rounded-lg px-4 py-3 text-body-sm text-[#a84a00] font-[700]">
                 {messages[reason]}
               </div>
             )}
@@ -70,7 +70,7 @@ function LoginContent() {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-3 bg-dg text-white rounded-xl py-3 px-5 text-[14px] font-[700] hover:bg-fg transition-colors disabled:opacity-60"
+              className="w-full flex items-center justify-center gap-3 bg-dg text-white rounded-xl py-3 px-5 text-body font-[700] hover:bg-fg transition-colors disabled:opacity-60"
             >
               {loading ? (
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -80,7 +80,7 @@ function LoginContent() {
               {loading ? 'Redirecting…' : 'Continue with Google'}
             </button>
 
-            <p className="mt-6 text-center text-[11.5px] text-brand-gray font-[500]">
+            <p className="mt-6 text-center text-caption text-brand-gray font-[600]">
               Public prompts are available without sign-in.{' '}
               <a href="/" className="text-fg hover:underline font-[700]">
                 Browse the library →
