@@ -457,6 +457,38 @@ html[data-library='claude'] .prompt-body {
   font-weight: 600;
 }
 
+/* ── Library-aware heading font overrides ──────────────────────────────────── */
+/* These live outside @layer so they cascade over the utility defaults */
+html[data-library='sidekick'] .type-display,
+html[data-library='sidekick'] .type-h1,
+html[data-library='sidekick'] .type-h2,
+html[data-library='sidekick'] .type-h3,
+html[data-library='sidekick'] .section-title,
+.librarytokens-sidekick .type-display,
+.librarytokens-sidekick .type-h1,
+.librarytokens-sidekick .type-h2,
+.librarytokens-sidekick .type-h3,
+.librarytokens-sidekick .section-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+}
+
+html[data-library='claude'] .type-display,
+html[data-library='claude'] .type-h1,
+html[data-library='claude'] .type-h2,
+html[data-library='claude'] .type-h3,
+html[data-library='claude'] .section-title,
+.librarytokens-claude .type-display,
+.librarytokens-claude .type-h1,
+.librarytokens-claude .type-h2,
+.librarytokens-claude .type-h3,
+.librarytokens-claude .section-title {
+  font-family: 'Darker Grotesque', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
 /* ── Focus ring ────────────────────────────────────────────────────────────── */
 *:focus-visible {
   outline: 2px solid #499e6b;

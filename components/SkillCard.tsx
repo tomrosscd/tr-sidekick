@@ -24,7 +24,7 @@ export function SkillCard({ skill }: SkillCardProps) {
           {skill.is_recommended && <Badge variant="recommended">Recommended</Badge>}
         </div>
         <Link href={`/skills/${skill.slug}`} className="block group">
-          <h3 className="font-serif text-h3 text-[var(--shell-fg)] leading-[1.22] mb-1.5 group-hover:text-[var(--library-accent)] transition-colors">
+          <h3 className="text-h3 font-[700] text-[var(--shell-fg)] leading-[1.22] mb-1.5 group-hover:text-[var(--library-accent)] transition-colors">
             {skill.title}
           </h3>
         </Link>
