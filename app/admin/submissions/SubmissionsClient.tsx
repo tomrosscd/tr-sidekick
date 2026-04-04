@@ -30,27 +30,53 @@ export function SubmissionsClient({ submissions }: Props) {
   const handleApprove = async (submission: PromptSubmission) => {
     setWorking(true)
     try {
-      // Create the prompt
-      const { error: promptError } = await supabase.from('prompts').insert({
-        slug: slugify(submission.title),
-        title: submission.title,
-        short_description: submission.short_description,
-        prompt_body: submission.prompt_body,
-        category: submission.category,
-        use_cases: submission.use_cases,
-        data_sources: submission.data_sources,
-        visibility: 'internal',
-        status: 'published',
-        source_label: 'Convert',
-        owner_name: submission.submitter_name,
-        created_by: submission.submitted_by,
-        version: 1,
-        published_at: new Date().toISOString(),
-      })
+      // 1. Create the prompt (return id for version wiring)
+      const { data: newPrompt, error: promptError } = await supabase
+        .from('prompts')
+        .insert({
+          slug: slugify(submission.title),
+          title: submission.title,
+          short_description: submission.short_description,
+          prompt_body: submission.prompt_body,
+          category: submission.category,
+          use_cases: submission.use_cases,
+          data_sources: submission.data_sources,
+          visibility: 'internal',
+          status: 'published',
+          source_label: 'Convert',
+          owner_name: submission.submitter_name,
+          created_by: submission.submitted_by,
+          version: 1,
+          published_at: new Date().toISOString(),
+        })
+        .select('id')
+        .single()
 
-      if (promptError) throw promptError
+      if (promptError || !newPrompt) throw promptError ?? new Error('No prompt returned')
 
-      // Update submission
+      // 2. Create version 1 record for this prompt
+      const { data: newVersion, error: versionError } = await supabase
+        .from('prompt_versions')
+        .insert({
+          prompt_id: newPrompt.id,
+          version_number: 1,
+          prompt_body: submission.prompt_body,
+          change_notes: 'Initial version',
+          created_by: submission.submitted_by,
+          created_by_name: submission.submitter_name,
+        })
+        .select('id')
+        .single()
+
+      if (versionError || !newVersion) throw versionError ?? new Error('No version returned')
+
+      // 3. Wire current_version_id back to the new version
+      await supabase
+        .from('prompts')
+        .update({ current_version_id: newVersion.id })
+        .eq('id', newPrompt.id)
+
+      // 4. Mark submission as approved
       await supabase
         .from('prompt_submissions')
         .update({

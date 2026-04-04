@@ -43,10 +43,24 @@ export interface Prompt {
   reviewed_by: string | null
   owner_name: string | null
   version: number
+  current_version_id: string | null
   last_reviewed_at: string | null
   published_at: string | null
   created_at: string
   updated_at: string
+}
+
+// ─── Prompt Version ───────────────────────────────────────────────────────────
+
+export interface PromptVersion {
+  id: string
+  prompt_id: string
+  version_number: number
+  prompt_body: string
+  change_notes: string | null
+  created_by: string | null
+  created_by_name: string | null
+  created_at: string
 }
 
 // ─── Prompt Collection ────────────────────────────────────────────────────────

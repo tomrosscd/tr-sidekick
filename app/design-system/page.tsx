@@ -34,6 +34,7 @@ const samplePrompt: Prompt = {
   reviewed_by: null,
   owner_name: 'Performance Team',
   version: 1,
+  current_version_id: null,
   last_reviewed_at: null,
   published_at: null,
   created_at: new Date().toISOString(),

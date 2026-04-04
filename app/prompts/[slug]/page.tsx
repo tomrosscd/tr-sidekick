@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
-import type { Prompt } from '@/types'
+import type { Prompt, PromptVersion } from '@/types'
 import { PromptDetailClient } from './PromptDetailClient'
 
 type FollowUpPrompt = Pick<Prompt, 'id' | 'slug' | 'title' | 'short_description' | 'category'>
@@ -39,6 +39,15 @@ export default async function PromptDetailPage({ params }: Props) {
 
   if (!prompt) notFound()
 
+  // Fetch all versions for this prompt, newest first
+  const { data: versionsData } = await supabase
+    .from('prompt_versions')
+    .select('*')
+    .eq('prompt_id', prompt.id)
+    .order('version_number', { ascending: false })
+
+  const versions = (versionsData as PromptVersion[] | null) ?? []
+
   // Fetch follow-up prompts if any
   let followUpPrompts: FollowUpPrompt[] = []
   if (prompt.follow_up_prompt_ids?.length > 0) {
@@ -49,5 +58,11 @@ export default async function PromptDetailPage({ params }: Props) {
     followUpPrompts = (data as FollowUpPrompt[] | null) ?? []
   }
 
-  return <PromptDetailClient prompt={prompt} followUpPrompts={followUpPrompts} />
+  return (
+    <PromptDetailClient
+      prompt={prompt}
+      versions={versions}
+      followUpPrompts={followUpPrompts}
+    />
+  )
 }

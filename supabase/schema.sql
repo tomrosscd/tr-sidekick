@@ -44,6 +44,7 @@ CREATE TABLE prompts (
   reviewed_by           UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   owner_name            TEXT,
   version               INTEGER NOT NULL DEFAULT 1,
+  current_version_id    UUID,           -- FK added after prompt_versions is created (see below)
   last_reviewed_at      TIMESTAMPTZ,
   published_at          TIMESTAMPTZ,
   created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -62,6 +63,31 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER prompts_updated_at
   BEFORE UPDATE ON prompts
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- ── Prompt Versions ────────────────────────────────────────────────
+
+CREATE TABLE prompt_versions (
+  id               UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  prompt_id        UUID        NOT NULL REFERENCES prompts(id) ON DELETE CASCADE,
+  version_number   INTEGER     NOT NULL,
+  prompt_body      TEXT        NOT NULL,
+  change_notes     TEXT,                       -- brief changelog / reason for edit
+  created_by       UUID        REFERENCES auth.users(id) ON DELETE SET NULL,
+  created_by_name  TEXT,                       -- display name; stored to avoid joining auth.users
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  UNIQUE (prompt_id, version_number)
+);
+
+CREATE INDEX idx_prompt_versions_prompt  ON prompt_versions(prompt_id);
+CREATE INDEX idx_prompt_versions_created ON prompt_versions(created_at DESC);
+
+-- Wire current_version_id FK now that prompt_versions exists
+ALTER TABLE prompts
+  ADD CONSTRAINT prompts_current_version_fk
+  FOREIGN KEY (current_version_id)
+  REFERENCES prompt_versions(id)
+  ON DELETE SET NULL;
 
 -- ── Prompt Collections ─────────────────────────────────────────────
 
@@ -137,6 +163,7 @@ CREATE INDEX idx_events_created ON prompt_events(created_at DESC);
 -- ═══════════════════════════════════════════════════════════════════
 
 ALTER TABLE prompts              ENABLE ROW LEVEL SECURITY;
+ALTER TABLE prompt_versions      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prompt_collections   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prompt_collection_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prompt_submissions   ENABLE ROW LEVEL SECURITY;
@@ -202,6 +229,44 @@ CREATE POLICY "Admin can delete prompts"
   ON prompts FOR DELETE
   TO authenticated
   USING (is_admin_user());
+
+-- ── Prompt Versions RLS ───────────────────────────────────────────-
+
+CREATE POLICY "Public can read versions of public prompts"
+  ON prompt_versions FOR SELECT
+  TO anon, authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM prompts p
+      WHERE  p.id         = prompt_id
+        AND  p.visibility = 'public'
+        AND  p.status     = 'published'
+    )
+  );
+
+CREATE POLICY "Internal users can read versions of internal prompts"
+  ON prompt_versions FOR SELECT
+  TO authenticated
+  USING (
+    is_internal_user()
+    AND EXISTS (
+      SELECT 1 FROM prompts p
+      WHERE  p.id         = prompt_id
+        AND  p.visibility IN ('public', 'internal')
+        AND  p.status     = 'published'
+    )
+  );
+
+CREATE POLICY "Admin can read all prompt versions"
+  ON prompt_versions FOR SELECT
+  TO authenticated
+  USING (is_admin_user());
+
+CREATE POLICY "Admin can write prompt versions"
+  ON prompt_versions FOR ALL
+  TO authenticated
+  USING    (is_admin_user())
+  WITH CHECK (is_admin_user());
 
 -- ── Prompt Collections RLS ─────────────────────────────────────────
 
