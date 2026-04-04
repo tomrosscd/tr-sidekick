@@ -24,12 +24,13 @@ export function SkillCard({ skill }: SkillCardProps) {
           {skill.is_recommended && <Badge variant="recommended">Recommended</Badge>}
         </div>
         <Link href={`/skills/${skill.slug}`} className="block group">
-          <h3 className="text-h3 font-[700] text-[var(--shell-fg)] leading-[1.22] mb-1.5 group-hover:text-[var(--library-accent)] transition-colors">
+          <h3 className="text-h3 leading-[1.22] mb-1.5 text-[var(--shell-fg)] group-hover:text-[var(--library-accent)] transition-colors"
+              style={{ fontFamily: 'inherit', fontWeight: 600 }}>
             {skill.title}
           </h3>
         </Link>
         {skill.short_description && (
-          <p className="text-body-sm text-[var(--shell-muted-fg)] font-[500] leading-[1.5]">
+          <p className="text-body-sm text-[var(--shell-muted-fg)] leading-[1.52]" style={{ fontWeight: 400 }}>
             {skill.short_description}
           </p>
         )}
@@ -56,9 +57,9 @@ export function SkillCard({ skill }: SkillCardProps) {
         </span>
         <Link
           href={`/skills/${skill.slug}`}
-          className="text-caption font-[600] text-[var(--library-accent)] hover:underline"
+          className="text-caption font-[700] text-[var(--library-accent)] hover:underline"
         >
-          Details
+          View skill →
         </Link>
       </div>
     </div>

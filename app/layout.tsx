@@ -19,7 +19,7 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
   return (
-    <html lang="en" data-library="sidekick" suppressHydrationWarning>
+    <html lang="en" data-library="convert" suppressHydrationWarning>
       <head>
         {gaId && (
           <>

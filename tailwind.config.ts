@@ -61,19 +61,23 @@ const config: Config = {
         },
       },
       fontFamily: {
+        // Convert: Instrument Serif (display) + Darker Grotesque (body/UI)
         serif: ['Instrument Serif', 'Georgia', 'serif'],
         sans: ['Darker Grotesque', 'system-ui', 'sans-serif'],
+        // Sidekick: Inter only
         sidekick: ['Inter', 'system-ui', 'sans-serif'],
+        // Claude Skills: Inter (body/UI) + Source Serif 4 (editorial accents)
+        'claude-serif': ['Source Serif 4', 'Georgia', 'serif'],
       },
       fontSize: {
-        display: ['3rem', { lineHeight: '1.05', fontWeight: '400' }],
-        h1: ['2.125rem', { lineHeight: '1.12', fontWeight: '400' }],
-        h2: ['1.625rem', { lineHeight: '1.2', fontWeight: '400' }],
-        h3: ['1.25rem', { lineHeight: '1.25', fontWeight: '500' }],
-        body: ['1.0625rem', { lineHeight: '1.55', fontWeight: '600' }],
-        'body-sm': ['0.9375rem', { lineHeight: '1.45', fontWeight: '600' }],
-        caption: ['0.8125rem', { lineHeight: '1.35', fontWeight: '600' }],
-        label: ['0.6875rem', { lineHeight: '1.2', fontWeight: '800', letterSpacing: '0.08em' }],
+        display:   ['3rem',      { lineHeight: '1.04', fontWeight: '400' }],
+        h1:        ['2.375rem',  { lineHeight: '1.10', fontWeight: '400' }],
+        h2:        ['1.75rem',   { lineHeight: '1.18', fontWeight: '400' }],
+        h3:        ['1.1875rem', { lineHeight: '1.28', fontWeight: '700' }],
+        body:      ['1.0625rem', { lineHeight: '1.58', fontWeight: '500' }],
+        'body-sm': ['0.9375rem', { lineHeight: '1.48', fontWeight: '500' }],
+        caption:   ['0.8125rem', { lineHeight: '1.35', fontWeight: '600' }],
+        label:     ['0.6875rem', { lineHeight: '1.2',  fontWeight: '800', letterSpacing: '0.08em' }],
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -14,37 +14,36 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
+import type { LibraryTheme } from './LibraryThemeSync'
 
 interface AuthButtonProps {
   compact?: boolean
-  variant?: 'sidekick' | 'claude'
+  variant?: LibraryTheme
 }
 
-export function AuthButton({ compact = false, variant = 'sidekick' }: AuthButtonProps) {
+export function AuthButton({ compact = false, variant = 'convert' }: AuthButtonProps) {
   const [user, setUser] = useState<SupabaseUser | null>(null)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
-  const headerOnDark = variant === 'sidekick'
+
+  // Convert and Sidekick both have dark headers; Claude has light
+  const headerOnDark = variant !== 'claude'
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user)
       setLoading(false)
     })
-
     const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user ?? null)
     })
-
     return () => listener.subscription.unsubscribe()
   }, [supabase.auth])
 
   const handleSignIn = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     })
   }
 
@@ -85,10 +84,7 @@ export function AuthButton({ compact = false, variant = 'sidekick' }: AuthButton
     )
   }
 
-  const initials = user.email
-    ? user.email.slice(0, 2).toUpperCase()
-    : 'U'
-
+  const initials = user.email ? user.email.slice(0, 2).toUpperCase() : 'U'
   const isInternal = isInternalUser(user.email)
   const isAdmin = isAdminUser(user.email)
 
@@ -145,23 +141,17 @@ export function AuthButton({ compact = false, variant = 'sidekick' }: AuthButton
         <DropdownMenuSeparator />
         {isInternal && (
           <DropdownMenuItem asChild>
-            <Link href="/submit" className="cursor-pointer">
-              Submit a prompt
-            </Link>
+            <Link href="/submit" className="cursor-pointer">Submit a prompt</Link>
           </DropdownMenuItem>
         )}
         {isInternal && (
           <DropdownMenuItem asChild>
-            <Link href="/skills/submit" className="cursor-pointer">
-              Submit a skill
-            </Link>
+            <Link href="/skills/submit" className="cursor-pointer">Submit a skill</Link>
           </DropdownMenuItem>
         )}
         {isAdmin && (
           <DropdownMenuItem asChild>
-            <Link href="/admin" className="cursor-pointer">
-              Admin area
-            </Link>
+            <Link href="/admin" className="cursor-pointer">Admin area</Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />

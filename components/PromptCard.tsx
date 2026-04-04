@@ -59,11 +59,12 @@ export function PromptCard({ prompt }: PromptCardProps) {
           href={`/prompts/${prompt.slug}`}
           className="block group"
         >
-          <h3 className="font-sidekick text-h3 font-semibold text-[var(--filter-tab-active-fg)] leading-[1.18] mb-1.5 group-hover:text-fg transition-colors">
+          <h3 className="text-h3 leading-[1.2] mb-1.5 text-[var(--shell-fg)] group-hover:text-[var(--library-accent)] transition-colors"
+              style={{ fontFamily: 'inherit', fontWeight: 700 }}>
             {prompt.title}
           </h3>
         </Link>
-        <p className="text-body-sm text-brand-gray font-[600] leading-[1.45]">
+        <p className="text-body-sm leading-[1.45] text-[var(--shell-muted-fg)]" style={{ fontWeight: 500 }}>
           {prompt.short_description}
         </p>
       </div>
@@ -73,13 +74,14 @@ export function PromptCard({ prompt }: PromptCardProps) {
         <div className="text-label text-brand-gray mb-2">Prompt preview</div>
         <div className="relative">
           <div className={cn(
-            'prompt-body text-body-sm leading-[1.72] text-brand-text whitespace-pre-wrap font-sans font-[600] transition-all duration-300',
+            'prompt-body transition-all duration-300',
             expanded ? 'max-h-none' : 'max-h-[148px] overflow-hidden'
           )}>
             {builtPrompt}
           </div>
           {!expanded && (
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[var(--library-surface)] to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
+               style={{ background: 'linear-gradient(to top, var(--library-surface-muted), transparent)' }} />
           )}
         </div>
       </div>
